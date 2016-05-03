@@ -11,8 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class MainController implements Initializable {
 
@@ -25,23 +26,39 @@ public class MainController implements Initializable {
     @FXML public Button btn2;
     @FXML public Tab tab3;
     @FXML public Tab tab4;
-    @FXML private GridPane Search_Grid;
     @FXML private TextField Search_Input;
+    @FXML private VBox vbox1;
+    @FXML private VBox vbox2;
+    @FXML private VBox vbox3;
+    @FXML private AnchorPane SearchTabBackPane;
     
-    public Button[] ButtonArray= new Button[6];
     
+    /// Personally Declared Variable
+    public Button[] Play_Button_Array = new Button[10];
+    public Label[] Result_Title = new Label[10];
+    public ImageView[] Thumbnail_Image = new ImageView[10];
+    
+      
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
-        for(int i=0; i<6; i++){
+        for(int i=0; i<10; i++){
             
-            ButtonArray[i] = new Button("Butt No: " + i);
+            /// Buttons for play 
+            Play_Button_Array[i] = new Button("Butt No: " + i);
+            Play_Button_Array[i].setPrefSize(110, 110);
             
-            Search_Grid.add(ButtonArray[i], 1, i);
-            ButtonArray[i].resize(150.0, 75.0);
+            /// For Showing Search Title
+            Result_Title[i] = new Label("Title = " + i);
+            Result_Title[i].setPrefSize(110, 350);
+            
     
         }
+        vbox3.getChildren().addAll(Play_Button_Array);
+        vbox2.getChildren().addAll(Result_Title);
+        
+        
     
                 
     }
