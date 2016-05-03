@@ -7,12 +7,38 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Rddha</name>
+    <name>Rddha</name>    
+    <url>http://maven.apache.org</url>
 
     <properties>
+        <project.youtube.version>v3-rev8-1.12.0-beta</project.youtube.version>
+        <project.http.version>1.12.0-beta</project.http.version>    
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>farhad.rddha.MainApp</mainClass>
     </properties>
+    
+      <repositories>
+        <repository>
+        <id>google-api-services</id>
+        <url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
+        </repository>
+    </repositories>
+
+      <dependencies>
+        <!-- YouTube Data V3 support -->
+        <dependency>
+          <groupId>com.google.apis</groupId>
+          <artifactId>google-api-services-youtube</artifactId>
+          <version>${project.youtube.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.google.http-client</groupId>
+          <artifactId>google-http-client-jackson2</artifactId>
+          <version>${project.http.version}</version>
+        </dependency>
+      </dependencies>
+
 
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->

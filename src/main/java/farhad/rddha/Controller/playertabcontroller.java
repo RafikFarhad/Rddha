@@ -5,7 +5,7 @@
  */
 package farhad.rddha.Controller;
 
-import static farhad.rddha.Controller.MainController.MyTab;
+
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
