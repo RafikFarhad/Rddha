@@ -24,7 +24,7 @@
                         <AnchorPane fx:id="SearchTabBackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefWidth="180.0">
                            <children>
                               <Button fx:id="btn1" layoutX="53.0" layoutY="117.0" mnemonicParsing="false" onAction="#bt1_pressed" text="Search" />
-                              <TextField fx:id="Search_Input" layoutX="6.0" layoutY="82.0" promptText="Search on youtube!" text="Do you dare to type!" />
+                              <TextField fx:id="Search_Input" layoutX="6.0" layoutY="82.0" promptText="Search on youtube!" text="SUST CSE" />
                            </children>
                         </AnchorPane>
                         <ScrollPane fitToWidth="true" layoutX="180.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefViewportWidth="1000.0" prefWidth="620.0">

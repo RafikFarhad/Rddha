@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,10 +19,8 @@ import javafx.scene.layout.VBox;
 
 public class MainController implements Initializable {
 
-
-
     @FXML
-    public static TabPane MyTab;
+    public TabPane MyTab;
     @FXML
     public Tab tab1;
     public Label lbl1;
@@ -58,16 +57,29 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        
     }
-    
-    public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link){
-        
+
+    public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link) {
+
         for (int i = 0; i < 10; i++) {
 
             /// Buttons for play 
             Play_Button_Array[i] = new Button("Butt No: " + i);
             Play_Button_Array[i].setPrefSize(110, 110);
+            Play_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                    //System.out.println("Hello World!" + event.getSource());
+                    for (int i = 0; i < 10; i++) {
+                        if (event.getSource() == Play_Button_Array[i]) {
+                            
+                            System.out.println("Link " + i + " is clicked");
+                            
+                        }
+                    }
+                }
+            });
 
             /// For Showing Search 
             Result_Title[i] = new Label(Title[i]);
@@ -77,7 +89,7 @@ public class MainController implements Initializable {
             test2[i] = new ImageView();
             test2[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             test2[i].setImage(new Image(Thumbnail_Link[i]));
-            
+
             test2[i].setFitHeight(110);
             test2[i].setFitWidth(110);
 
@@ -89,7 +101,6 @@ public class MainController implements Initializable {
         vbox1.getChildren().addAll(test2);
 
         //vbox1.getChildren().addAll(test);
-        
     }
 
     @FXML
@@ -104,6 +115,10 @@ public class MainController implements Initializable {
 
         MainApp.getInstance().SEARCH_IT(Search_Input.getText());
         Arrange_Search_Result(MainApp.getInstance().Result, MainApp.getInstance().Thumbnail_Link, MainApp.getInstance().Video_Link);
+        MyTab.getSelectionModel().selectNext();
+        System.out.println("My Tab: " + MyTab.getSelectionModel().getSelectedIndex());
+
+        System.out.println("Is it: " + MyTab.getId());
     }
 
 }
