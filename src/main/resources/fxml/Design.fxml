@@ -9,9 +9,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farhad.rddha.Controller.MainController">
    <children>
@@ -65,7 +67,38 @@
           </Tab>
             <Tab fx:id="tab3" text="Download">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="445.0" prefWidth="250.0">
+                           <children>
+                              <Button fx:id="format_1" blendMode="SRC_ATOP" layoutX="20.0" layoutY="137.0" mnemonicParsing="false" onAction="#this_format_1" prefHeight="29.0" prefWidth="210.0" text="Format 1" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                              <Button fx:id="format_2" blendMode="GREEN" layoutX="20.0" layoutY="180.0" mnemonicParsing="false" onAction="#this_format_2" prefHeight="29.0" prefWidth="210.0" text="Format 2" />
+                              <TextArea fx:id="download_text_title" layoutX="24.0" layoutY="231.0" prefHeight="88.0" prefWidth="206.0" text="Rddha Downloader" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </TextArea>
+                           </children>
+                        </AnchorPane>
+                        <ScrollPane fitToWidth="true" layoutX="250.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefViewportWidth="1000.0" prefWidth="550.0">
+                           <content>
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="1200.0" prefWidth="600.0">
+                                 <children>
+                                    <VBox fx:id="progressbar_vbox" layoutX="120.0" prefHeight="1200.0" prefWidth="360.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox fx:id="progress_cancel_vbox" layoutX="350.0" prefHeight="1200.0" prefWidth="240.0" spacing="10.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab fx:id="tab4" text="About">

@@ -58,6 +58,8 @@ public class MainApp extends Application {
     public static String[] Result = new String[50];
     public static String[] Thumbnail_Link = new String[50];
     public static String[] Video_Link = new String[50];
+    public static String[] Direct_Link = new String[50];
+    
     
 
     @Override
@@ -167,10 +169,10 @@ public class MainApp extends Application {
      */
     private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
 
-        System.out.println("\n=============================================================");
+        /*System.out.println("\n=============================================================");
         System.out.println(
                 "   First " + NUMBER_OF_VIDEOS_RETURNED + " videos for search on \"" + query + "\".");
-        System.out.println("=============================================================\n");
+        System.out.println("=============================================================\n");*/
 
         if (!iteratorSearchResults.hasNext()) {
             System.out.println(" There aren't any results for your query.");
@@ -189,10 +191,10 @@ public class MainApp extends Application {
                 Video_Link[i] = rId.getVideoId();
                 Thumbnail_Link[i] = thumbnail.getUrl();
                 i++;
-                System.out.println(" Video Id" + rId.getVideoId());
+                /*System.out.println(" Video Id" + rId.getVideoId());
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 System.out.println(" Thumbnail: " + thumbnail.getUrl());
-                System.out.println("\n-------------------------------------------------------------\n");
+                System.out.println("\n-------------------------------------------------------------\n");*/
             }
         }
     }
