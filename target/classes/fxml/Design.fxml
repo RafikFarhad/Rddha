@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farhad.rddha.Controller.MainController">
    <children>
@@ -59,8 +60,12 @@
                <content>
                   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
                      <children>
-                        <Label fx:id="lbl2" layoutX="241.0" layoutY="52.0" prefHeight="62.0" prefWidth="319.0" text="Tab 2" />
-                        <Button fx:id="btn2" layoutX="369.0" layoutY="184.0" mnemonicParsing="false" onAction="#bt2_pressed" text="Button" />
+                        <Label fx:id="lbl2" layoutY="369.0" prefHeight="62.0" prefWidth="176.0" text="Rddha :) " textAlignment="CENTER" textFill="#abdd07" wrapText="true">
+                           <font>
+                              <Font size="36.0" />
+                           </font></Label>
+                        <Button fx:id="btn2" layoutX="387.0" layoutY="400.0" mnemonicParsing="false" onAction="#bt2_pressed" text="Download It!" />
+                        <WebView fx:id="view_port" minHeight="360.0" minWidth="640.0" prefHeight="360.0" prefWidth="640.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -84,12 +89,12 @@
                            <content>
                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="1200.0" prefWidth="600.0">
                                  <children>
-                                    <VBox fx:id="progressbar_vbox" layoutX="120.0" prefHeight="1200.0" prefWidth="450.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="progressbar_vbox" layoutX="120.0" prefHeight="1200.0" prefWidth="360.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="progress_cancel_vbox" layoutX="480.0" prefHeight="1200.0" prefWidth="150.0" spacing="10.0" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="10.0">
+                                    <VBox fx:id="progress_cancel_vbox" layoutX="350.0" prefHeight="1200.0" prefWidth="240.0" spacing="10.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>

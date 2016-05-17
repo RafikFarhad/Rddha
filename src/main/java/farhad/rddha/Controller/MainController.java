@@ -28,8 +28,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 
 public class MainController implements Initializable {
@@ -78,6 +79,9 @@ public class MainController implements Initializable {
     public Label[] Result_Title = new Label[10];
     public ImageView[] Thumbnail_Image = new ImageView[10];
     public String inputQuery;
+    public int Now_Playing = 0;
+    @FXML
+    private WebView view_port = new WebView();
     
     
 
@@ -90,11 +94,15 @@ public class MainController implements Initializable {
     }
 
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link) {
+        
+        vbox1.getChildren().clear();
+        vbox2.getChildren().clear();
+        vbox3.getChildren().clear();        
 
         for (int i = 0; i < 10; i++) {
 
             /// Buttons for play 
-            Play_Button_Array[i] = new Button("Butt No: " + i);
+            Play_Button_Array[i] = new Button("Play It!");
             Play_Button_Array[i].setPrefSize(110, 55);
             Play_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
@@ -103,7 +111,7 @@ public class MainController implements Initializable {
                     //System.out.println("Hello World!" + event.getSource());
                     for (int j = 0; j < 10; j++) {
                         if (event.getSource() == Play_Button_Array[j]) {
-
+                            PLAY_IT(j);
                             System.out.println("Link " + j + " is clicked\n So " + j + "number video should be played");
                             break;
 
@@ -148,6 +156,15 @@ public class MainController implements Initializable {
         vbox2.getChildren().addAll(Result_Title);
         vbox1.getChildren().addAll(Thumbnail_Image);
     }
+    
+    void PLAY_IT(int j){
+        
+        MyTab.getSelectionModel().select(1);
+        Now_Playing = j;
+        String temp = "http://www.youtube.com/embed/"+ MainApp.Video_Link[j] + "?autoplay=1";
+        view_port.getEngine().load(temp);
+        
+    }
 
     void Download_ADD_FUNCTION(int j) {
 
@@ -166,9 +183,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void bt2_pressed(ActionEvent event) {
-        System.out.println("MAIN tab 2!!!!!!!");
-        MyTab.getSelectionModel().select(tab4);
-
+        
+        MyTab.getSelectionModel().select(3);
+        Download_ADD_FUNCTION(Now_Playing);
+        
     }
 
     @FXML
