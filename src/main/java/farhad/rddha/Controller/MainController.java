@@ -18,11 +18,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -31,8 +32,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
 
 public class MainController implements Initializable {
@@ -44,11 +43,8 @@ public class MainController implements Initializable {
     public Label lbl1;
     @FXML
     public Button btn1;
-    @FXML
     public Tab tab2;
-    @FXML
     public Label lbl2;
-    @FXML
     public Button btn2;
     @FXML
     public Tab tab3;
@@ -83,94 +79,65 @@ public class MainController implements Initializable {
     public String inputQuery;
     public int Now_Playing = 0;
     @FXML
-    private WebView view_port = new WebView();
+    private TextField Search_Input_video_link;
+    @FXML
+    private Button video_link_btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        format_1.setDisable(true);
-        format_2.setDisable(true);
-
     }
 
-    public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) {
+    public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
 
         vbox1.getChildren().clear();
         vbox2.getChildren().clear();
         vbox3.getChildren().clear();
         for (int i = 0; i < tot; i++) {
 
-            /*
-            /// Buttons for play 
-            Play_Button_Array[i] = new Button("Play It!");
-            Play_Button_Array[i].setPrefSize(110, 55);
-            Play_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                    //System.out.println("Hello World!" + event.getSource());
-                    for (int j = 0; j < 10; j++) {
-                        if (event.getSource() == Play_Button_Array[j]) {
-                            PLAY_IT(j);
-                            System.out.println("Link " + j + " is clicked\n So " + j + "number video should be played");
-                            break;
-
-                        }
-                    }
-                }
-            });
-             */
             /// Buttons for Download 
             Download_Button_Array[i] = new Button("Download");
-            Download_Button_Array[i].setPrefSize(180, 180);
+            Download_Button_Array[i].setPrefHeight(170);
+            Download_Button_Array[i].setPrefWidth(150);
 
             Download_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    //System.out.println("Hello World!" + event.getSource());
                     for (int j = 0; j < tot; j++) {
                         if (event.getSource() == Download_Button_Array[j]) {
 
-                            //System.out.println("Link " + j + " is clicked\n So " + j + "number video should be download");
-                            Download_ADD_FUNCTION(j);
+                            try {
+                                //System.out.println("Link " + j + " is clicked\n So " + j + "number video should be download");
+                                //Download_ADD_FUNCTION(j);
+                                SHOW_POP_UP(j);
+                            } catch (IOException ex) {
+                                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             break;
 
                         }
                     }
                 }
             });
-            /// For Showing Search 
+            /// For Showing Title 
             Result_Title[i] = new Label(Title[i]);
-            Result_Title[i].setPrefHeight(180);
+            Result_Title[i].setPrefHeight(170);
             Result_Title[i].setPrefWidth(300);
-            
-            //System.out.println(Title[i]);
-            ///Thumbnail Image Section
 
+            ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             Thumbnail_Image[i].setImage(new Image(Thumbnail_Link[i]));
-            Thumbnail_Image[i].setFitHeight(180);
-            Thumbnail_Image[i].setFitWidth(320);
-
+            Thumbnail_Image[i].setFitHeight(170);
+            Thumbnail_Image[i].setFitWidth(310);
             vbox1.getChildren().addAll(Thumbnail_Image[i]);
             vbox2.getChildren().addAll(Result_Title[i]);
             vbox3.getChildren().addAll(Download_Button_Array[i]);  ///Add to allignment
 
         }
-        //vbox2.getChildren().addAll(Result_Title);
-        //vbox1.getChildren().addAll(Thumbnail_Image);
     }
 
-//    void PLAY_IT(int j){
-//        
-//        MyTab.getSelectionModel().select(1);
-//        Now_Playing = j;
-//        String temp = "http://www.youtube.com/embed/"+ MainApp.Video_Link[j] + "?autoplay=1";
-//        view_port.getEngine().load(temp);
-//        
-//    }
     void Download_ADD_FUNCTION(int j) {
 
         MyTab.getSelectionModel().select(2);
@@ -185,7 +152,18 @@ public class MainController implements Initializable {
 
     }
 
-    @FXML
+    void SHOW_POP_UP(int video_no) throws IOException {
+
+        Dialog dialog_box = new Dialog();
+        dialog_box.setTitle("Choice Dialog");
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
+
+        dialog_box.getDialogPane().getChildren().add(root);
+        dialog_box.getDialogPane().setPrefSize(400, 200);
+        dialog_box.show();
+
+    }
+
     private void bt2_pressed(ActionEvent event) {
 
         MyTab.getSelectionModel().select(3);
@@ -295,6 +273,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void this_format_2(ActionEvent event) {
+    }
+
+    @FXML
+    private void video_link_button_pressed(ActionEvent event) {
     }
 
 }

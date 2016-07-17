@@ -34,6 +34,7 @@ public class MainApp extends Application {
 
         stage.setTitle("RDDHA 1.0");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -115,7 +116,7 @@ public class MainApp extends Application {
 
             Result[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getString("title");
             Video_Link[i] = jinishpati.getJSONObject(i).getJSONObject("contentDetails").getString("videoId");
-            Thumbnail_Link[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("medium").getString("url");
+            Thumbnail_Link[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("high").getString("url");
             //System.out.println(Result[i]);
             //System.out.println(Video_Link[i]);
             //System.out.println(Thumbnail_Link[i]);

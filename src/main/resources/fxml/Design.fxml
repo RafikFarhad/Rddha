@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -14,11 +13,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farhad.rddha.Controller.MainController">
    <children>
-      <TabPane fx:id="MyTab" layoutX="115.0" layoutY="129.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1080.0" tabMaxWidth="1080.0" tabMinHeight="25.0" tabMinWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <TabPane fx:id="MyTab" layoutX="115.0" layoutY="129.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="800.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="1080.0" tabMaxWidth="1080.0" tabMinHeight="25.0" tabMinWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
         <tabs>
           <Tab fx:id="tab1" text="Search">
                <content>
@@ -26,47 +24,23 @@
                      <children>
                         <AnchorPane fx:id="SearchTabBackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="800.0">
                            <children>
-                              <Button fx:id="btn1" layoutX="230.0" layoutY="15.0" mnemonicParsing="false" onAction="#bt1_pressed" text="Search" />
-                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="15.0" promptText="Search on youtube!" text="PLrrvJVo1_i-fiUCsgtZLsBSS8_3DvXjkN" />
+                              <Button fx:id="btn1" layoutX="139.0" layoutY="47.0" mnemonicParsing="false" onAction="#bt1_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
+                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="15.0" prefHeight="26.0" prefWidth="418.0" promptText="Search on youtube!" text="PLrrvJVo1_i-fiUCsgtZLsBSS8_3DvXjkN" />
+                              <TextField fx:id="Search_Input_video_link" layoutX="454.0" layoutY="13.0" prefHeight="26.0" prefWidth="336.0" promptText="www.youtube.com/**************" />
+                              <Button fx:id="video_link_btn" layoutX="558.0" layoutY="47.0" mnemonicParsing="false" onAction="#video_link_button_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
                            </children>
                         </AnchorPane>
                         <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="800.0" AnchorPane.topAnchor="85.0">
                           <content>
                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0">
                                  <children>
-                                    <VBox fx:id="vbox1" prefHeight="1600.0" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox fx:id="vbox2" layoutX="150.0" layoutY="85.0" prefHeight="1600.0" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox fx:id="vbox3" layoutX="480.0" layoutY="-3.0" prefHeight="1600.0" prefWidth="180.0" spacing="10.0" AnchorPane.leftAnchor="620.0">
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
+                                    <VBox fx:id="vbox1" prefHeight="1600.0" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <VBox fx:id="vbox2" prefHeight="1600.0" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0" />
+                                    <VBox fx:id="vbox3" prefHeight="1601.0" prefWidth="160.0" spacing="10.0" AnchorPane.leftAnchor="620.0" />
                                  </children>
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </content>
-          </Tab>
-          <Tab fx:id="tab2" text="Player">
-               <content>
-                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
-                     <children>
-                        <Label fx:id="lbl2" layoutY="369.0" prefHeight="62.0" prefWidth="176.0" text="Rddha :) " textAlignment="CENTER" textFill="#abdd07" wrapText="true">
-                           <font>
-                              <Font size="36.0" />
-                           </font></Label>
-                        <Button fx:id="btn2" layoutX="387.0" layoutY="400.0" mnemonicParsing="false" onAction="#bt2_pressed" text="Download It!" />
-                        <WebView fx:id="view_port" minHeight="360.0" minWidth="640.0" prefHeight="360.0" prefWidth="640.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
