@@ -24,6 +24,8 @@ public class MainApp extends Application {
     public static String[] Video_Link = new String[500];
     public static String[] Direct_Link = new String[500];
     public static int total_item;
+    public static String current;
+    public static String dest_location = null;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -56,7 +58,8 @@ public class MainApp extends Application {
 
         try {
             LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE(query);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
             return;
         }
@@ -85,7 +88,8 @@ public class MainApp extends Application {
                 jsonData2 += line2 + "\n";
             }
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
         }
 //        finally {
@@ -106,7 +110,8 @@ public class MainApp extends Application {
         total_item = 0;
         try {
             total_item = pageInfo.getInt("totalResults");
-        } catch (JSONException e) {
+        } 
+        catch (JSONException e) {
             e.printStackTrace();
             return;
         }

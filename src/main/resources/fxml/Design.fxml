@@ -49,27 +49,26 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane prefHeight="445.0" prefWidth="250.0">
+                        <AnchorPane prefHeight="60.0" prefWidth="787.0">
                            <children>
-                              <Button fx:id="format_1" blendMode="SRC_ATOP" layoutX="20.0" layoutY="137.0" mnemonicParsing="false" onAction="#this_format_1" prefHeight="29.0" prefWidth="210.0" text="Format 1" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-                              <Button fx:id="format_2" blendMode="GREEN" layoutX="20.0" layoutY="180.0" mnemonicParsing="false" onAction="#this_format_2" prefHeight="29.0" prefWidth="210.0" text="Format 2" />
-                              <TextArea fx:id="download_text_title" layoutX="24.0" layoutY="231.0" prefHeight="88.0" prefWidth="206.0" text="Rddha Downloader" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                              <TextArea fx:id="destination" editable="false" layoutX="7.0" layoutY="13.0" prefHeight="35.0" prefWidth="560.0" promptText="Destination Folder" wrapText="true">
                                  <font>
-                                    <Font size="16.0" />
+                                    <Font size="12.0" />
                                  </font>
                               </TextArea>
+                              <Button fx:id="change_dest" layoutX="607.0" layoutY="14.0" mnemonicParsing="false" onAction="#CHENGE_DEST_BUTTON_PRESSED" prefHeight="26.0" prefWidth="126.0" text="Change" />
                            </children>
                         </AnchorPane>
-                        <ScrollPane fitToWidth="true" layoutX="250.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefViewportWidth="1000.0" prefWidth="550.0">
+                        <ScrollPane fitToWidth="true" layoutY="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="375.0" prefViewportWidth="1000.0" prefWidth="805.0">
                            <content>
-                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="1200.0" prefWidth="600.0">
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="1200.0" prefWidth="783.0">
                                  <children>
-                                    <VBox fx:id="progressbar_vbox" layoutX="120.0" prefHeight="1200.0" prefWidth="360.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="progressbar_vbox" prefHeight="1200.0" prefWidth="700.0" spacing="10.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="progress_cancel_vbox" layoutX="350.0" prefHeight="1200.0" prefWidth="240.0" spacing="10.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="progress_cancel_vbox" layoutX="681.0" prefHeight="1200.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>

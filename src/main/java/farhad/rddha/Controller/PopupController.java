@@ -27,14 +27,17 @@ public class PopupController implements Initializable{
     private Button ok_button;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         
-        System.out.println("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-        choice.getItems().addAll("Mp4", "3gp", "webm");
+        choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
 
     }
     
     @FXML
     private void CANCEL_BUTTON_PRESSED(ActionEvent event) {
+        
+        System.out.println("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
+        ok_button.getScene().getWindow().hide();
     }
 
     @FXML

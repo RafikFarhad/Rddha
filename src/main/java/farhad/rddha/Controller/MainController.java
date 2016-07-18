@@ -20,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -33,43 +34,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class MainController implements Initializable {
-
-    @FXML
-    public TabPane MyTab;
-    @FXML
-    public Tab tab1;
-    public Label lbl1;
-    @FXML
-    public Button btn1;
-    public Tab tab2;
-    public Label lbl2;
-    public Button btn2;
-    @FXML
-    public Tab tab3;
-    @FXML
-    public Tab tab4;
-    @FXML
-    private TextField Search_Input;
-    @FXML
-    private VBox vbox1;
-    @FXML
-    private VBox vbox2;
-    @FXML
-    private VBox vbox3;
-    @FXML
-    private AnchorPane SearchTabBackPane;
-    @FXML
-    private Button format_1;
-    @FXML
-    private Button format_2;
-    @FXML
-    private TextArea download_text_title;
-    @FXML
-    private VBox progressbar_vbox;
-    @FXML
-    private VBox progress_cancel_vbox;
 
     /// Personally Declared Variable
     public Button[] Play_Button_Array = new Button[500];
@@ -79,10 +46,38 @@ public class MainController implements Initializable {
     public String inputQuery;
     public int Now_Playing = 0;
     @FXML
+    private TabPane MyTab;
+    @FXML
+    private Tab tab1;
+    @FXML
+    private AnchorPane SearchTabBackPane;
+    @FXML
+    private Button btn1;
+    @FXML
+    private TextField Search_Input;
+    @FXML
     private TextField Search_Input_video_link;
     @FXML
     private Button video_link_btn;
-
+    @FXML
+    private VBox vbox1;
+    @FXML
+    private VBox vbox2;
+    @FXML
+    private VBox vbox3;
+    @FXML
+    private Tab tab3;
+    @FXML
+    private TextArea destination;
+    @FXML
+    private Button change_dest;
+    @FXML
+    private VBox progressbar_vbox;
+    @FXML
+    private VBox progress_cancel_vbox;
+    @FXML
+    private Tab tab4;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -138,36 +133,16 @@ public class MainController implements Initializable {
         }
     }
 
-    void Download_ADD_FUNCTION(int j) {
-
-        MyTab.getSelectionModel().select(2);
-        String title = MainApp.Result[j];
-        String short_link = MainApp.Video_Link[j];
-        download_text_title.setText(title);
-
-        format_1.setDisable(false);
-        format_2.setDisable(false);
-        MainApp.Direct_Link[0] = "http://f1.wload.vc/files/sfd105/52457/Hello_Honey_Bunny_TV_Ads%28wapking.fm%29.mp3";
-        MainApp.Direct_Link[1] = "http://f1.wload.vc/files/sfd105/52457/Hello_Honey_Bunny_TV_Ads%28wapking.fm%29.mp3";
-
-    }
-
     void SHOW_POP_UP(int video_no) throws IOException {
-
-        Dialog dialog_box = new Dialog();
-        dialog_box.setTitle("Choice Dialog");
+        
+        MainApp.current = MainApp.Video_Link[video_no];
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
-
-        dialog_box.getDialogPane().getChildren().add(root);
-        dialog_box.getDialogPane().setPrefSize(400, 200);
-        dialog_box.show();
-
-    }
-
-    private void bt2_pressed(ActionEvent event) {
-
-        MyTab.getSelectionModel().select(3);
-        Download_ADD_FUNCTION(Now_Playing);
+        Stage popup = new Stage();
+        Scene scene = new Scene(root);
+        popup.setTitle("Select Format");
+        popup.setScene(scene);
+        popup.setResizable(false);
+        popup.show();
 
     }
 
@@ -179,21 +154,10 @@ public class MainController implements Initializable {
 
     }
 
-    @FXML
-    private void this_format_1(ActionEvent event) {
+    public void DOWNLOAD(final String load) {
 
-        /*ProgressBar pb = new ProgressBar();
-        ProgressIndicator pi = new ProgressIndicator();
-
-        pb.setProgress(0.5);*/
-        final String load = MainApp.Direct_Link[0];
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Where to download?");
-        File defaultDirectory = new File("/home/rafikfarhad/Desktop");
-        chooser.setInitialDirectory(defaultDirectory);
-        File selectedDirectory = chooser.showDialog(null);
-
-        final String space = selectedDirectory.getPath();
+        
+        final String space = MainApp.dest_location;
 
         final Task task;
         task = new Task<Void>() {
@@ -271,8 +235,18 @@ public class MainController implements Initializable {
         new Thread(task2).start();
     }
 
+
     @FXML
-    private void this_format_2(ActionEvent event) {
+    private void CHENGE_DEST_BUTTON_PRESSED(ActionEvent event) {
+        
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Select Destination Folder...");
+        File defaultDirectory = new File("/home/rafikfarhad/Desktop");
+        chooser.setInitialDirectory(defaultDirectory);
+        File selectedDirectory = chooser.showDialog(null);
+        String st = selectedDirectory.getPath();
+        MainApp.dest_location = st;
+        destination.setText(st);
     }
 
     @FXML
