@@ -25,6 +25,8 @@ public class MainApp extends Application {
     public static String[] Direct_Link = new String[500];
     public static int total_item;
     public static String current;
+    public static String current_title;
+    
     public static String dest_location = null;
 
     @Override

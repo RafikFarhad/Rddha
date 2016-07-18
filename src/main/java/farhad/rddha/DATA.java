@@ -5,6 +5,8 @@
  */
 package farhad.rddha;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 /**
@@ -13,6 +15,19 @@ import javafx.scene.control.ProgressBar;
  */
 public class DATA {
     
-    ProgressBar bar;
+    public ProgressBar bar;
+    public Button play, stop;
+    public Label state;
+
+    public DATA(){
+        bar = new ProgressBar();
+        play = new Button("A");
+        stop = new Button("B");
+        state = new Label("0.0/0.0");
+        bar.setPrefSize(660, 20);
+        play.setPrefSize(40, 20);
+        stop.setPrefSize(40, 20);
+        state.setPrefSize(200, 20);
+    }
     
 }
