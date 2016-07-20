@@ -241,7 +241,7 @@ public class MainController implements Initializable {
         new Thread(task2).start();
     }
 
-    public void RESULT_FROM_CHOCE(String my_format) throws MalformedURLException {
+    /*public void RESULT_FROM_CHOCE(String my_format) throws MalformedURLException {
 
         System.out.println(my_format);
         if (my_format == null) {
@@ -253,12 +253,11 @@ public class MainController implements Initializable {
         } else if (my_format == "3GP 244pixel") {
             my_format = "3gp";
         }
-
         /// JOGONNO HISHAB_NIKASH EKHONO BAKI -_-
         ///
         TESTINGG(my_format, "http://r6---sn-p5qlsnsy.googlevideo.com/videoplayback?nh=IgpwcjAzLmlhZDA3KgkxMjcuMC4wLjE&source=youtube&upn=vRtrKMN5A54&ei=JjqNV7SaNIePcMDSi_gP&ip=2a03%3A8180%3A1001%3A16a%3A%3A8ee1&key=yt6&mm=31&ipbits=0&mn=sn-p5qlsnsy&pl=40&mt=1468872769&dur=403.307&mv=m&initcwndbps=2987500&ms=au&itag=18&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9416126%2C9416891%2C9419451%2C9422596%2C9426687%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433223%2C9433946%2C9435526%2C9435739%2C9435876%2C9437066%2C9437552%2C9437742%2C9438227%2C9438327%2C9438547%2C9438663%2C9438731%2C9439470%2C9439585%2C9439652%2C9439882%2C9440376%2C9440431%2C9440799%2C9441108%2C9441191%2C9441768&id=o-AIwYiblhVp2V_O1XyXOUMLuWM40wKxH0vqO-OopDZTSN&mime=video%2Fmp4&ratebypass=yes&lmt=1468410110384082&sver=3&expire=1468894854&signature=A77D7CD931E94412351BF61EA1639AECB9DE44E4.BBDDDE11D5EDAFD5DB801230DC4E19DE52482AEB&title=DIL+KI+DOYA+HOINA+MEDLEY+-+TAPOSH+FEAT.+OYSHEE+%3A+WIND+OF+CHANGE+%5B+PRE-SEASON+%5D+at+GAAN+BANGLA+TV");
 
-    }
+    }*/
 
     public void TESTINGG(String format, final String load) throws MalformedURLException {
 
@@ -269,7 +268,7 @@ public class MainController implements Initializable {
         stop_vbox.getChildren().addAll(a.stop);
 
         if (MainApp.dest_location == null) {
-            CHENGE_DEST_BUTTON_PRESSED(new ActionEvent());
+            CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
         }
 
         final String space = MainApp.dest_location;
@@ -299,14 +298,52 @@ public class MainController implements Initializable {
                 return null;
             }
         };
+        
+        final Path temp = targetPath;
+        
+        Task task2;
+        task2 = new Task<Void>() {
+            @Override
+            public Void call() throws MalformedURLException, IOException, InterruptedException {
+
+                URL url = new URL(load);
+                Path targetPath = temp;
+
+                HttpURLConnection conn = null;
+
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("HEAD");
+                conn.getInputStream();
+                System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
+                int total_size = conn.getContentLength();
+
+                for (; ; ) {
+                    updateProgress(targetPath.toFile().length(), total_size);
+                    //wait();
+                    //System.out.println(targetPath.toFile().length() + " -> " + total_size);
+                    if (task.isDone() || task.isCancelled()) {
+                        a.stop.fire();
+                        break;
+                    }
+                }
+
+                return null;
+            }
+        };
+        //bar.progressProperty().bind(task2.progressProperty());
+        a.bar.progressProperty().bind(task2.progressProperty());
         final Thread thread1 = new Thread(task);
+        final Thread thread2 = new Thread(task2);
         thread1.start();
+        thread2.start();
         System.out.println("fileName = " + fileName);
         System.out.println("TargetPath = " + targetPath);
+        
         a.stop.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 thread1.stop();
+                thread2.stop();
                 int id = progressbar_vbox.getChildren().indexOf(a.bar);
                 //System.out.println("ID: " + id);
                 progressbar_vbox.getChildren().remove(id);
@@ -323,12 +360,11 @@ public class MainController implements Initializable {
                 a.play.setText("D");
             }
         });
-        
+        MyTab.getSelectionModel().select(1);
 
     }
 
-    @FXML
-    public void CHENGE_DEST_BUTTON_PRESSED(ActionEvent event) {
+    public void CHANGE_DEST_BUTTON_PRESSED(ActionEvent event) {
 
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select Destination Folder...");
@@ -343,8 +379,7 @@ public class MainController implements Initializable {
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws MalformedURLException {
 
-        MainApp.current_title = "testing";
-        RESULT_FROM_CHOCE("mp4");
+        
     }
 
     private static MainController instance;
@@ -355,5 +390,9 @@ public class MainController implements Initializable {
 
     public static MainController getInstance() {
         return instance;
+    }
+
+    @FXML
+    private void CHENGE_DEST_BUTTON_PRESSED(ActionEvent event) {
     }
 }

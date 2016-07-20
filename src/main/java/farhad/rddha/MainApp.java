@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +28,8 @@ public class MainApp extends Application {
     public static int total_item;
     public static String current;
     public static String current_title;
-    
+    public static String keys;
+
     public static String dest_location = null;
 
     @Override
@@ -42,67 +45,60 @@ public class MainApp extends Application {
         stage.show();
     }
 
-    void LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE(String query) throws IOException {
+    void LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE() throws IOException {
 
         BufferedReader br = null;
         URL inputUrl = getClass().getResource("/userfile/youtube.properties");
         File dest1 = new File("upload/rddh_log.txt");
         FileUtils.copyURLToFile(inputUrl, dest1);
-        
+
         String line;
         br = new BufferedReader(new FileReader(dest1.toString()));
         line = br.readLine();
         System.out.println("MY KEYS: " + line);
-        
+        keys = line;
     }
 
     public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws IOException {
 
         try {
-            LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE(query);
+            LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE();
         } 
         catch (Exception e) {
             e.printStackTrace();
             return;
         }
+        query = "=" + query;
+        query = query.substring(query.lastIndexOf('=') + 1);
+        //System.out.println("QUERY: " + query);
 
         String jsonData = "";
-        BufferedReader br = null;
-        URL inputUrl = getClass().getResource("/userfile/cd.txt");
-        File dest1 = new File("upload/rddh_log.txt");
-        FileUtils.copyURLToFile(inputUrl, dest1);
-
         String jsonData2 = "";
-        BufferedReader br2 = null;
-        URL inputUrl2 = getClass().getResource("/userfile/snippet.txt");
-        File dest2 = new File("upload/rddh_log2.txt");
-        FileUtils.copyURLToFile(inputUrl2, dest2);
 
-        try {
-            String line;
-            br = new BufferedReader(new FileReader(dest1.toString()));
-            while ((line = br.readLine()) != null) {
-                jsonData += line + "\n";
+        {
+            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId="
+                    + query + "&key=" + keys);
+            URLConnection yc = yahoo.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonData2 += inputLine;
+                //System.out.println(inputLine);
             }
-            String line2;
-            br2 = new BufferedReader(new FileReader(dest2.toString()));
-            while ((line2 = br2.readLine()) != null) {
-                jsonData2 += line2 + "\n";
-            }
-
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
+            in.close();
         }
-//        finally {
-//            try {
-//                if (br != null) {
-//                    br.close();
-//                }
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
+        {
+            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId="
+                    + query + "&key=" + keys);
+            URLConnection yc = yahoo.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonData += inputLine;
+                //System.out.println(inputLine);
+            }
+            in.close();
+        }
 
         JSONObject main_obj = new JSONObject(jsonData);
         JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
@@ -112,13 +108,15 @@ public class MainApp extends Application {
         total_item = 0;
         try {
             total_item = pageInfo.getInt("totalResults");
-        } 
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             return;
         }
         JSONArray jinishpati = main_obj.getJSONArray("items");
         JSONArray jinishpati2 = main_obj2.getJSONArray("items");
+        if(total_item>48) {
+            total_item = 48;
+        }
         for (int i = 0; i < total_item; i++) {
 
             Result[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getString("title");

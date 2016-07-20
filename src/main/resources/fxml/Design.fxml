@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -24,19 +25,36 @@
                      <children>
                         <AnchorPane fx:id="SearchTabBackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="800.0">
                            <children>
-                              <Button fx:id="btn1" layoutX="139.0" layoutY="47.0" mnemonicParsing="false" onAction="#bt1_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
-                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="15.0" prefHeight="26.0" prefWidth="418.0" promptText="Search on youtube!" text="PLrrvJVo1_i-fiUCsgtZLsBSS8_3DvXjkN" />
-                              <TextField fx:id="Search_Input_video_link" layoutX="454.0" layoutY="13.0" prefHeight="26.0" prefWidth="336.0" promptText="www.youtube.com/**************" />
-                              <Button fx:id="video_link_btn" layoutX="558.0" layoutY="47.0" mnemonicParsing="false" onAction="#video_link_button_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
+                              <Button fx:id="btn1" layoutX="139.0" layoutY="55.0" mnemonicParsing="false" onAction="#bt1_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
+                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="24.0" prefHeight="26.0" prefWidth="418.0" promptText="Search on youtube!" style="-fx-background-radius: 10;" text="https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBsvRxJJOzG4r4k_zLKrnxl">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font></TextField>
+                              <TextField fx:id="Search_Input_video_link" layoutX="454.0" layoutY="24.0" prefHeight="26.0" prefWidth="336.0" promptText="www.youtube.com/**************" style="-fx-background-radius: 10;">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font></TextField>
+                              <Button fx:id="video_link_btn" layoutX="558.0" layoutY="55.0" mnemonicParsing="false" onAction="#video_link_button_pressed" prefHeight="26.0" prefWidth="163.0" text="Search" />
+                              <Label layoutX="151.0" layoutY="7.0" text="Youtube Playlist Link:" />
+                              <Label layoutX="552.0" layoutY="7.0" text="Youtube Video Link:" />
                            </children>
                         </AnchorPane>
                         <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="800.0" AnchorPane.topAnchor="85.0">
                           <content>
                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0">
                                  <children>
-                                    <VBox fx:id="vbox1" prefHeight="1600.0" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <VBox fx:id="vbox2" prefHeight="1600.0" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0" />
-                                    <VBox fx:id="vbox3" prefHeight="1601.0" prefWidth="160.0" spacing="10.0" AnchorPane.leftAnchor="620.0" />
+                                    <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefHeight="3200.0" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding></VBox>
+                                    <VBox fx:id="vbox2" maxHeight="1.7976931348623157E308" prefHeight="1600.0" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding></VBox>
+                                    <VBox fx:id="vbox3" maxHeight="1.7976931348623157E308" prefHeight="1601.0" prefWidth="160.0" spacing="10.0" AnchorPane.leftAnchor="620.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding></VBox>
                                  </children>
                               </AnchorPane>
                           </content>
