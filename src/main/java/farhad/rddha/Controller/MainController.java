@@ -42,10 +42,10 @@ import javafx.stage.Stage;
 public class MainController implements Initializable {
 
     /// Personally Declared Variable
-    public Button[] Play_Button_Array = new Button[500];
-    public Button[] Download_Button_Array = new Button[500];
-    public Label[] Result_Title = new Label[500];
-    public ImageView[] Thumbnail_Image = new ImageView[500];
+    public Button[] Play_Button_Array;// = new Button[55];
+    public Button[] Download_Button_Array = new Button[55];
+    public TextArea[] Result_Title = new TextArea[500];
+    public ImageView[] Thumbnail_Image = new ImageView[55];
     public String inputQuery;
     public int Now_Playing = 0;
     @FXML
@@ -98,7 +98,7 @@ public class MainController implements Initializable {
             /// Buttons for Download 
             Download_Button_Array[i] = new Button("Download");
             Download_Button_Array[i].setPrefHeight(170);
-            Download_Button_Array[i].setPrefWidth(150);
+            Download_Button_Array[i].setPrefWidth(300);
 
             Download_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
@@ -121,16 +121,18 @@ public class MainController implements Initializable {
                 }
             });
             /// For Showing Title 
-            Result_Title[i] = new Label(Title[i]);
+            Result_Title[i] = new TextArea(Title[i]);
             Result_Title[i].setPrefHeight(170);
             Result_Title[i].setPrefWidth(300);
+            Result_Title[i].setEditable(false);
+            Result_Title[i].setWrapText(true);
 
             ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             Thumbnail_Image[i].setImage(new Image(Thumbnail_Link[i]));
             Thumbnail_Image[i].setFitHeight(170);
-            Thumbnail_Image[i].setFitWidth(310);
+            Thumbnail_Image[i].setFitWidth(300);
             vbox1.getChildren().addAll(Thumbnail_Image[i]);
             vbox2.getChildren().addAll(Result_Title[i]);
             vbox3.getChildren().addAll(Download_Button_Array[i]);  ///Add to allignment
@@ -151,14 +153,6 @@ public class MainController implements Initializable {
         popup.setScene(scene);
         popup.setResizable(false);
         popup.show();
-
-    }
-
-    @FXML
-    public void bt1_pressed(ActionEvent event) throws IOException {
-
-        MainApp.getInstance().GET_ALL_DATA_FROM_PLAYLIST(Search_Input.getText());// getSEARCH_IT(Search_Input.getText());
-        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
 
     }
 
@@ -258,7 +252,6 @@ public class MainController implements Initializable {
         TESTINGG(my_format, "http://r6---sn-p5qlsnsy.googlevideo.com/videoplayback?nh=IgpwcjAzLmlhZDA3KgkxMjcuMC4wLjE&source=youtube&upn=vRtrKMN5A54&ei=JjqNV7SaNIePcMDSi_gP&ip=2a03%3A8180%3A1001%3A16a%3A%3A8ee1&key=yt6&mm=31&ipbits=0&mn=sn-p5qlsnsy&pl=40&mt=1468872769&dur=403.307&mv=m&initcwndbps=2987500&ms=au&itag=18&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9416126%2C9416891%2C9419451%2C9422596%2C9426687%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433223%2C9433946%2C9435526%2C9435739%2C9435876%2C9437066%2C9437552%2C9437742%2C9438227%2C9438327%2C9438547%2C9438663%2C9438731%2C9439470%2C9439585%2C9439652%2C9439882%2C9440376%2C9440431%2C9440799%2C9441108%2C9441191%2C9441768&id=o-AIwYiblhVp2V_O1XyXOUMLuWM40wKxH0vqO-OopDZTSN&mime=video%2Fmp4&ratebypass=yes&lmt=1468410110384082&sver=3&expire=1468894854&signature=A77D7CD931E94412351BF61EA1639AECB9DE44E4.BBDDDE11D5EDAFD5DB801230DC4E19DE52482AEB&title=DIL+KI+DOYA+HOINA+MEDLEY+-+TAPOSH+FEAT.+OYSHEE+%3A+WIND+OF+CHANGE+%5B+PRE-SEASON+%5D+at+GAAN+BANGLA+TV");
 
     }*/
-
     public void TESTINGG(String format, final String load) throws MalformedURLException {
 
         final DATA a = new DATA();
@@ -298,9 +291,9 @@ public class MainController implements Initializable {
                 return null;
             }
         };
-        
+
         final Path temp = targetPath;
-        
+
         Task task2;
         task2 = new Task<Void>() {
             @Override
@@ -317,7 +310,7 @@ public class MainController implements Initializable {
                 System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
                 int total_size = conn.getContentLength();
 
-                for (; ; ) {
+                for (;;) {
                     updateProgress(targetPath.toFile().length(), total_size);
                     //wait();
                     //System.out.println(targetPath.toFile().length() + " -> " + total_size);
@@ -338,7 +331,7 @@ public class MainController implements Initializable {
         thread2.start();
         System.out.println("fileName = " + fileName);
         System.out.println("TargetPath = " + targetPath);
-        
+
         a.stop.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -348,27 +341,42 @@ public class MainController implements Initializable {
                 //System.out.println("ID: " + id);
                 progressbar_vbox.getChildren().remove(id);
                 progressbar_vbox.getChildren().remove(id);
-                play_vbox.getChildren().remove(id/2);
-                stop_vbox.getChildren().remove(id/2);
+                play_vbox.getChildren().remove(id / 2);
+                stop_vbox.getChildren().remove(id / 2);
             }
         });
         a.play.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                thread1.resume();
-                int id = progressbar_vbox.getChildren().indexOf(a.bar);
-                a.play.setText("D");
+                if (a.on == 1) {
+                    try {
+                        thread1.wait();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    a.play.setText("D");
+                    a.on = 0;
+                }
+                else{
+                    thread1.notify();
+                    a.play.setText("A");
+                    a.on = 1;
+                }
+                
             }
         });
         MyTab.getSelectionModel().select(1);
 
     }
 
+    @FXML
     public void CHANGE_DEST_BUTTON_PRESSED(ActionEvent event) {
 
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select Destination Folder...");
-        File defaultDirectory = new File("/home/rafikfarhad/Desktop");
+        //String userDir = System.getProperty("user.home");
+        //JFileChooser fc = new JFileChooser(userDir + "/Desktop");
+        File defaultDirectory = new File(System.getProperty("user.home") + "/Desktop");
         chooser.setInitialDirectory(defaultDirectory);
         File selectedDirectory = chooser.showDialog(null);
         String st = selectedDirectory.getPath();
@@ -377,9 +385,18 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void video_link_button_pressed(ActionEvent event) throws MalformedURLException {
+    public void bt1_pressed(ActionEvent event) throws IOException {
 
-        
+        MainApp.getInstance().GET_ALL_DATA_FROM_PLAYLIST(Search_Input.getText());// getSEARCH_IT(Search_Input.getText());
+        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+
+    }
+
+    @FXML
+    public void video_link_button_pressed(ActionEvent event) throws IOException {
+
+        MainApp.getInstance().GET_ALL_DATA_FROM_VIDEO(Search_Input_video_link.getText());// getSEARCH_IT(Search_Input.getText());
+        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
     }
 
     private static MainController instance;
@@ -392,7 +409,4 @@ public class MainController implements Initializable {
         return instance;
     }
 
-    @FXML
-    private void CHENGE_DEST_BUTTON_PRESSED(ActionEvent event) {
-    }
 }

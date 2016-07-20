@@ -43,15 +43,15 @@
                           <content>
                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0">
                                  <children>
-                                    <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefHeight="3200.0" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefWidth="320.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox2" maxHeight="1.7976931348623157E308" prefHeight="1600.0" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox2" maxHeight="1.7976931348623157E308" prefWidth="300.0" spacing="10.0" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox3" maxHeight="1.7976931348623157E308" prefHeight="1601.0" prefWidth="160.0" spacing="10.0" AnchorPane.leftAnchor="620.0">
+                                    <VBox fx:id="vbox3" maxHeight="1.7976931348623157E308" prefWidth="160.0" spacing="10.0" AnchorPane.leftAnchor="620.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
@@ -74,7 +74,7 @@
                                     <Font size="12.0" />
                                  </font>
                               </TextArea>
-                              <Button fx:id="change_dest" layoutX="607.0" layoutY="14.0" mnemonicParsing="false" onAction="#CHENGE_DEST_BUTTON_PRESSED" prefHeight="26.0" prefWidth="126.0" text="Change" />
+                              <Button fx:id="change_dest" layoutX="607.0" layoutY="14.0" mnemonicParsing="false" onAction="#CHANGE_DEST_BUTTON_PRESSED" prefHeight="26.0" prefWidth="126.0" text="Change" />
                            </children>
                         </AnchorPane>
                         <ScrollPane fitToWidth="true" layoutY="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="375.0" prefViewportWidth="1000.0" prefWidth="805.0">

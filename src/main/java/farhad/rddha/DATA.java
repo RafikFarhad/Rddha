@@ -18,6 +18,7 @@ public class DATA {
     public ProgressBar bar;
     public Button play, stop;
     public Label state;
+    public int on = 0;
 
     public DATA(){
         bar = new ProgressBar();
@@ -28,6 +29,7 @@ public class DATA {
         play.setPrefSize(40, 20);
         stop.setPrefSize(40, 20);
         state.setPrefSize(200, 20);
+        on = 1;
     }
     
 }

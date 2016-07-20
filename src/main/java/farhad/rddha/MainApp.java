@@ -38,7 +38,7 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Design.fxml"));
 
         Scene scene = new Scene(root);
-
+        LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE();
         stage.setTitle("RDDHA 1.0");
         stage.setScene(scene);
         stage.setResizable(false);
@@ -61,13 +61,6 @@ public class MainApp extends Application {
 
     public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws IOException {
 
-        try {
-            LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
         query = "=" + query;
         query = query.substring(query.lastIndexOf('=') + 1);
         //System.out.println("QUERY: " + query);
@@ -114,7 +107,7 @@ public class MainApp extends Application {
         }
         JSONArray jinishpati = main_obj.getJSONArray("items");
         JSONArray jinishpati2 = main_obj2.getJSONArray("items");
-        if(total_item>48) {
+        if (total_item > 48) {
             total_item = 48;
         }
         for (int i = 0; i < total_item; i++) {
@@ -130,6 +123,45 @@ public class MainApp extends Application {
 
     }
 
+    public void GET_ALL_DATA_FROM_VIDEO(String query) throws IOException {
+
+        query = "=" + query;
+        query = query.substring(query.lastIndexOf('=') + 1);
+        System.out.println(query + " -> \n" + keys + "\n");
+        String jsonData = "";
+        String jsonData2 = "";
+
+        {
+            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/videos?id="
+                    + query + "&part=snippet&key=" + keys);
+            
+            System.out.println(yahoo.toString() + "\n");
+            URLConnection yc = yahoo.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonData2 += inputLine;
+                //System.out.println(inputLine);
+            }
+            in.close();
+        }
+        
+
+        JSONObject main_obj2 = new JSONObject(jsonData2);
+
+        //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
+        total_item = 1;
+
+        JSONArray jinishpati2 = main_obj2.getJSONArray("items");
+
+        Result[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getString("title");
+        Video_Link[0] = query;
+        Thumbnail_Link[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("high").getString("url");
+        //System.out.println(Result[i]);
+        //System.out.println(Video_Link[i]);
+        //System.out.println(Thumbnail_Link[i]);
+
+    }
 //    public void SEARCH_IT(String aa) {
 //
 //        Properties properties = new Properties();
