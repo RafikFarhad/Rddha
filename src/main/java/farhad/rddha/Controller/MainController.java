@@ -1,10 +1,12 @@
 package farhad.rddha.Controller;
 
+import com.sun.media.jfxmediaimpl.platform.Platform;
 import farhad.rddha.DATA;
 import farhad.rddha.MainApp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import static java.lang.Thread.sleep;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import javafx.fxml.Initializable;
@@ -23,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
@@ -38,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import org.json.JSONException;
 
 public class MainController implements Initializable {
 
@@ -86,6 +90,11 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
+        destination.setText(System.getProperty("user.home") + "/Desktop/");
+        vbox1.getChildren().removeAll();
+        vbox2.getChildren().removeAll();
+        vbox3.getChildren().removeAll();
+
     }
 
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
@@ -156,189 +165,51 @@ public class MainController implements Initializable {
 
     }
 
-    public void DOWNLOAD(final String load) {
+    public void TESTINGG(String format, final String load) throws MalformedURLException, IOException {
 
-        final String space = MainApp.dest_location;
-
-        final Task task;
-        task = new Task<Void>() {
-            @Override
-            public Void call() throws MalformedURLException, IOException {
-
-                URL url = new URL(load);
-
-                String fileName = "My Name.mp3";//url.getFile();
-
-                Path targetPath = new File(space + fileName).toPath();
-
-                HttpURLConnection conn = null;
-
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("HEAD");
-                conn.getInputStream();
-                //System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
-                int total_size = conn.getContentLength();
-                try (InputStream in = url.openStream()) {
-
-                    fileName = url.getFile();
-                    fileName = url.getUserInfo();
-
-                    //System.out.println(fileName);
-                    Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-                }
-                return null;
-            }
-        };
-
-        Task task2 = new Task<Void>() {
-            @Override
-            public Void call() throws MalformedURLException, IOException {
-
-                URL url = new URL(load);
-
-                String fileName = "My Name.mp3";//url.getFile();
-                Path targetPath = new File(space + fileName).toPath();
-
-                HttpURLConnection conn = null;
-
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("HEAD");
-                conn.getInputStream();
-                System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
-                int total_size = conn.getContentLength();
-
-                for (int i = 0; i < 1000000; i++) {
-                    updateProgress(targetPath.toFile().length(), total_size);
-                    //System.out.println(targetPath.toFile().length() + " -> " + total_size);
-                    if (task.isDone() || task.isCancelled()) {
-                        break;
-                    }
-                }
-
-                return null;
-            }
-        };
-
-        ProgressBar bar = new ProgressBar();
-        bar.setPrefSize(350, 20);
-
-        //progressbar_vbox.setAlignment(Pos.CENTER);
-        progressbar_vbox.getChildren().addAll(bar);
-
-        //Temporary.setPrefSize(100, 20);
-        //progress_cancel_vbox.setSpacing(15);
-        //progress_cancel_vbox.getChildren().addAll(Temporary);
-        bar.progressProperty().bind(task2.progressProperty());
-
-        new Thread(task).start();
-        new Thread(task2).start();
-    }
-
-    /*public void RESULT_FROM_CHOCE(String my_format) throws MalformedURLException {
-
-        System.out.println(my_format);
-        if (my_format == null) {
-            return;
-        } else if (my_format == "MP4 720pixel" || my_format == "MP4 480pixel") {
-            my_format = "mp4";
-        } else if (my_format == "WEBM 360pixel") {
-            my_format = "webm";
-        } else if (my_format == "3GP 244pixel") {
-            my_format = "3gp";
-        }
-        /// JOGONNO HISHAB_NIKASH EKHONO BAKI -_-
-        ///
-        TESTINGG(my_format, "http://r6---sn-p5qlsnsy.googlevideo.com/videoplayback?nh=IgpwcjAzLmlhZDA3KgkxMjcuMC4wLjE&source=youtube&upn=vRtrKMN5A54&ei=JjqNV7SaNIePcMDSi_gP&ip=2a03%3A8180%3A1001%3A16a%3A%3A8ee1&key=yt6&mm=31&ipbits=0&mn=sn-p5qlsnsy&pl=40&mt=1468872769&dur=403.307&mv=m&initcwndbps=2987500&ms=au&itag=18&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9416126%2C9416891%2C9419451%2C9422596%2C9426687%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433223%2C9433946%2C9435526%2C9435739%2C9435876%2C9437066%2C9437552%2C9437742%2C9438227%2C9438327%2C9438547%2C9438663%2C9438731%2C9439470%2C9439585%2C9439652%2C9439882%2C9440376%2C9440431%2C9440799%2C9441108%2C9441191%2C9441768&id=o-AIwYiblhVp2V_O1XyXOUMLuWM40wKxH0vqO-OopDZTSN&mime=video%2Fmp4&ratebypass=yes&lmt=1468410110384082&sver=3&expire=1468894854&signature=A77D7CD931E94412351BF61EA1639AECB9DE44E4.BBDDDE11D5EDAFD5DB801230DC4E19DE52482AEB&title=DIL+KI+DOYA+HOINA+MEDLEY+-+TAPOSH+FEAT.+OYSHEE+%3A+WIND+OF+CHANGE+%5B+PRE-SEASON+%5D+at+GAAN+BANGLA+TV");
-
-    }*/
-    public void TESTINGG(String format, final String load) throws MalformedURLException {
-
-        final DATA a = new DATA();
-        a.state.setText(load);
-        progressbar_vbox.getChildren().addAll(a.bar, a.state);
+        final DATA a = new DATA(format, load);
+        Thread t = new Thread(a);
+        t.start();
+        //System.out.println("Download Thread started :D +++++++++++++++++++++++++");
+        a.HeadLine.setText("Downloading -- " + MainApp.current_title);
+        progressbar_vbox.getChildren().addAll(a.bar, a.HeadLine);
         play_vbox.getChildren().addAll(a.play);
         stop_vbox.getChildren().addAll(a.stop);
 
-        if (MainApp.dest_location == null) {
-            CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
-        }
+//        if (MainApp.dest_location == null) {
+//            CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
+//        }
+        MainApp.dest_location = "/home/rafikfarhad/Desktop";
 
-        final String space = MainApp.dest_location;
-        String fileName = MainApp.current_title + "." + format;
-
-        final Path targetPath = new File(space + "/" + fileName).toPath();
-        int size;
-
-        final Task task;
-        task = new Task<Void>() {
-            @Override
-            public Void call() throws MalformedURLException, IOException {
-
-                URL url = new URL(load);
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("HEAD");
-                conn.getInputStream();
-                System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
-                final int file_size = conn.getContentLength();
-                try (InputStream in = url.openStream()) {
-
-                    //fileName = url.getFile();
-                    //fileName = url.getUserInfo();
-                    Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                }
-                return null;
-            }
-        };
-
-        final Path temp = targetPath;
-
-        Task task2;
+        Task task2 = null;
         task2 = new Task<Void>() {
             @Override
             public Void call() throws MalformedURLException, IOException, InterruptedException {
-
-                URL url = new URL(load);
-                Path targetPath = temp;
-
-                HttpURLConnection conn = null;
-
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("HEAD");
-                conn.getInputStream();
-                System.out.println("SIZE IS::::: " + conn.getContentLength() + " -> " + conn.getContentType());
-                int total_size = conn.getContentLength();
-
+                int d, s;
                 for (;;) {
-                    updateProgress(targetPath.toFile().length(), total_size);
-                    //wait();
-                    //System.out.println(targetPath.toFile().length() + " -> " + total_size);
-                    if (task.isDone() || task.isCancelled()) {
-                        a.stop.fire();
-                        break;
+                    d = a.downloaded;
+                    s = a.size;
+                    updateProgress(d, s);
+                    sleep(500);
+                    if (s != -1 && d >= s) {
+                        a.play.setDisable(true);
+                        super.cancel();
+                    } else if (a.getStatus() == 3) {
+                        super.cancel();
+                    }
+                    if (isDone()) {
+                        super.cancel();
                     }
                 }
-
-                return null;
             }
         };
-        //bar.progressProperty().bind(task2.progressProperty());
         a.bar.progressProperty().bind(task2.progressProperty());
-        final Thread thread1 = new Thread(task);
-        final Thread thread2 = new Thread(task2);
-        thread1.start();
-        thread2.start();
-        System.out.println("fileName = " + fileName);
-        System.out.println("TargetPath = " + targetPath);
 
         a.stop.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                thread1.stop();
-                thread2.stop();
+                a.cancel();
                 int id = progressbar_vbox.getChildren().indexOf(a.bar);
-                //System.out.println("ID: " + id);
                 progressbar_vbox.getChildren().remove(id);
                 progressbar_vbox.getChildren().remove(id);
                 play_vbox.getChildren().remove(id / 2);
@@ -348,34 +219,37 @@ public class MainController implements Initializable {
         a.play.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
+                int LengthofTitle = MainApp.current_title.length();
+                if (LengthofTitle > 20) {
+                    LengthofTitle = 20;
+                }
                 if (a.on == 1) {
-                    try {
-                        thread1.wait();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    a.play.setText("D");
+                    a.play.setText("▶");
+                    a.play.getStyleClass().add("play-pause-button-2");
                     a.on = 0;
-                }
-                else{
-                    thread1.notify();
-                    a.play.setText("A");
+
+                    a.HeadLine.setText("Paused      -- " + MainApp.current_title.substring(0, LengthofTitle) + "." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.go_to_pause();
+                } else {
+                    a.play.setText("▮▮");
+                    a.play.getStyleClass().add("play-pause-button");
                     a.on = 1;
+                    a.HeadLine.setText("Downloading -- " + MainApp.current_title.substring(0, LengthofTitle) + "." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.go_to_resume();
                 }
-                
             }
         });
+        final Thread thread2 = new Thread(task2);
+        thread2.start();
         MyTab.getSelectionModel().select(1);
-
     }
 
     @FXML
+
     public void CHANGE_DEST_BUTTON_PRESSED(ActionEvent event) {
 
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select Destination Folder...");
-        //String userDir = System.getProperty("user.home");
-        //JFileChooser fc = new JFileChooser(userDir + "/Desktop");
         File defaultDirectory = new File(System.getProperty("user.home") + "/Desktop");
         chooser.setInitialDirectory(defaultDirectory);
         File selectedDirectory = chooser.showDialog(null);
@@ -387,15 +261,50 @@ public class MainController implements Initializable {
     @FXML
     public void bt1_pressed(ActionEvent event) throws IOException {
 
-        MainApp.getInstance().GET_ALL_DATA_FROM_PLAYLIST(Search_Input.getText());// getSEARCH_IT(Search_Input.getText());
+        try {
+            MainApp.getInstance().GET_ALL_DATA_FROM_PLAYLIST(Search_Input.getText());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Error in parsing data with youtube");
+            alert.setContentText("Possible Cause:\n"
+                    + "-> Please check your playlist link, it may either be broken"
+                    + " or this playlist is not public\n"
+                    + "-> Check your internet connection.");
+            //alert.contentTextProperty().
+            alert.getDialogPane().setPrefSize(500, 250);
+            alert.getDialogPane().getScene().getWindow().sizeToScene();
+            alert.showAndWait();
+            return;
+        }
         Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
 
     }
 
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException {
+        MainApp.current_title = "FARHAD";
+        TESTINGG("mp4", "https://r2---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?upn=teRXWI8lisI&initcwndbps=577500&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&source=youtube&pl=24&sver=3&ratebypass=yes&requiressl=yes&ipbits=0&mime=video%2Fmp4&itag=18&mn=sn-jtcxgb5ux-1tae&mm=31&signature=413AEC2BD0566822C52B8F7E86DF0647FB095B7D.D1C2EADEC07852C1D497DC279D96344909AEB833&ms=au&mv=m&mt=1471373550&dur=325.590&key=yt6&pcm2cms=yes&lmt=1445406788355487&ip=27.147.226.78&expire=1471395852&id=o-ABGw8AiUAz_5OYDWTKbVNla-w9DrOGZ3ZdwBg4IuLYRT&title=Ei%20Bidaye%20Artcell");
+        if (1 + 1 == 2) {
+            return;
+        }
+        try {
+            MainApp.getInstance().GET_ALL_DATA_FROM_VIDEO(Search_Input_video_link.getText());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Error in parsing data with youtube");
+            alert.setContentText("Possible Cause:\n"
+                    + "-> Please check your video link, it may either be broken"
+                    + " or this video is not public\n"
+                    + "-> Check your internet connection.");
+            //alert.contentTextProperty().
+            alert.getDialogPane().setPrefSize(500, 250);
+            alert.getDialogPane().getScene().getWindow().sizeToScene();
+            alert.showAndWait();
+            return;
+        }
 
-        MainApp.getInstance().GET_ALL_DATA_FROM_VIDEO(Search_Input_video_link.getText());// getSEARCH_IT(Search_Input.getText());
         Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
     }
 

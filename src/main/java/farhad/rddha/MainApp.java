@@ -2,16 +2,21 @@ package farhad.rddha;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.System.in;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -59,7 +64,7 @@ public class MainApp extends Application {
         keys = line;
     }
 
-    public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws IOException {
+    public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws Exception {
 
         query = "=" + query;
         query = query.substring(query.lastIndexOf('=') + 1);
@@ -72,13 +77,16 @@ public class MainApp extends Application {
             URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId="
                     + query + "&key=" + keys);
             URLConnection yc = yahoo.openConnection();
+
             BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 jsonData2 += inputLine;
                 //System.out.println(inputLine);
             }
             in.close();
+
         }
         {
             URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId="
@@ -94,17 +102,14 @@ public class MainApp extends Application {
         }
 
         JSONObject main_obj = new JSONObject(jsonData);
-        JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
+
         JSONObject main_obj2 = new JSONObject(jsonData2);
 
         //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
         total_item = 0;
-        try {
-            total_item = pageInfo.getInt("totalResults");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return;
-        }
+
+        JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
+        total_item = pageInfo.getInt("totalResults");
         JSONArray jinishpati = main_obj.getJSONArray("items");
         JSONArray jinishpati2 = main_obj2.getJSONArray("items");
         if (total_item > 48) {
@@ -120,7 +125,6 @@ public class MainApp extends Application {
             //System.out.println(Thumbnail_Link[i]);
 
         }
-
     }
 
     public void GET_ALL_DATA_FROM_VIDEO(String query) throws IOException {
@@ -130,36 +134,40 @@ public class MainApp extends Application {
         System.out.println(query + " -> \n" + keys + "\n");
         String jsonData = "";
         String jsonData2 = "";
+        try {
+            {
+                URL yahoo = new URL("https://www.googleapis.com/youtube/v3/videos?id="
+                        + query + "&part=snippet&key=" + keys);
 
-        {
-            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/videos?id="
-                    + query + "&part=snippet&key=" + keys);
-            
-            System.out.println(yahoo.toString() + "\n");
-            URLConnection yc = yahoo.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                jsonData2 += inputLine;
-                //System.out.println(inputLine);
+                System.out.println(yahoo.toString() + "\n");
+                URLConnection yc = yahoo.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    jsonData2 += inputLine;
+                    //System.out.println(inputLine);
+                }
+                in.close();
             }
-            in.close();
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Invalid Playlist Link");
+            alert.setContentText("Please check your playlist link, it may either be broken \n"
+                    + "or may be this playlist is not public");
+            alert.showAndWait();
+            return;
         }
-        
 
         JSONObject main_obj2 = new JSONObject(jsonData2);
 
         //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
-        total_item = 1;
-
         JSONArray jinishpati2 = main_obj2.getJSONArray("items");
-
+        total_item = 0;
         Result[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getString("title");
         Video_Link[0] = query;
         Thumbnail_Link[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("high").getString("url");
-        //System.out.println(Result[i]);
-        //System.out.println(Video_Link[i]);
-        //System.out.println(Thumbnail_Link[i]);
+        total_item = 1;
 
     }
 //    public void SEARCH_IT(String aa) {
