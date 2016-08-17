@@ -39,9 +39,9 @@
                               <Label layoutX="552.0" layoutY="7.0" text="Youtube Video Link:" />
                            </children>
                         </AnchorPane>
-                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="800.0" AnchorPane.topAnchor="85.0">
+                        <ScrollPane fitToWidth="true" maxHeight="800.0" maxWidth="-Infinity" prefHeight="370.0" prefWidth="800.0" AnchorPane.topAnchor="85.0">
                           <content>
-                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="766.0" prefWidth="786.0" style="-fx-background-color: white;">
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0" style="-fx-background-color: white;">
                                  <children>
                                     <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefWidth="320.0" spacing="10.0" style="-fx-background-color: #ff99dd;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
@@ -114,12 +114,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#Close_It" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" text="Change Youtube API Key" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

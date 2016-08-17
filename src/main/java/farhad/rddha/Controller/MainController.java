@@ -5,15 +5,10 @@ import farhad.rddha.DATA;
 import farhad.rddha.MainApp;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import static java.lang.Thread.sleep;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import javafx.fxml.Initializable;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,10 +22,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -41,7 +32,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import org.json.JSONException;
+import javafx.stage.WindowEvent;
 
 public class MainController implements Initializable {
 
@@ -228,13 +219,14 @@ public class MainController implements Initializable {
                     a.play.getStyleClass().add("play-pause-button-2");
                     a.on = 0;
 
-                    a.HeadLine.setText("Paused      -- " + MainApp.current_title.substring(0, LengthofTitle) + "." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.HeadLine.setText("Paused        -- " + MainApp.current_title.substring(0, LengthofTitle) + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
                     a.go_to_pause();
-                } else {
+                } 
+                else {
                     a.play.setText("▮▮");
                     a.play.getStyleClass().add("play-pause-button");
                     a.on = 1;
-                    a.HeadLine.setText("Downloading -- " + MainApp.current_title.substring(0, LengthofTitle) + "." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.HeadLine.setText("Downloading -- " + MainApp.current_title.substring(0, LengthofTitle) + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
                     a.go_to_resume();
                 }
             }
@@ -283,11 +275,11 @@ public class MainController implements Initializable {
 
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException {
-        MainApp.current_title = "FARHAD";
-        TESTINGG("mp4", "https://r2---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?upn=teRXWI8lisI&initcwndbps=577500&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&source=youtube&pl=24&sver=3&ratebypass=yes&requiressl=yes&ipbits=0&mime=video%2Fmp4&itag=18&mn=sn-jtcxgb5ux-1tae&mm=31&signature=413AEC2BD0566822C52B8F7E86DF0647FB095B7D.D1C2EADEC07852C1D497DC279D96344909AEB833&ms=au&mv=m&mt=1471373550&dur=325.590&key=yt6&pcm2cms=yes&lmt=1445406788355487&ip=27.147.226.78&expire=1471395852&id=o-ABGw8AiUAz_5OYDWTKbVNla-w9DrOGZ3ZdwBg4IuLYRT&title=Ei%20Bidaye%20Artcell");
-        if (1 + 1 == 2) {
-            return;
-        }
+//        MainApp.current_title = "FARHAD";
+//        TESTINGG("mp4", "https://r2---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?upn=teRXWI8lisI&initcwndbps=577500&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&source=youtube&pl=24&sver=3&ratebypass=yes&requiressl=yes&ipbits=0&mime=video%2Fmp4&itag=18&mn=sn-jtcxgb5ux-1tae&mm=31&signature=413AEC2BD0566822C52B8F7E86DF0647FB095B7D.D1C2EADEC07852C1D497DC279D96344909AEB833&ms=au&mv=m&mt=1471373550&dur=325.590&key=yt6&pcm2cms=yes&lmt=1445406788355487&ip=27.147.226.78&expire=1471395852&id=o-ABGw8AiUAz_5OYDWTKbVNla-w9DrOGZ3ZdwBg4IuLYRT&title=Ei%20Bidaye%20Artcell");
+//        if (1 + 1 == 2) {
+//            return;
+//        }
         try {
             MainApp.getInstance().GET_ALL_DATA_FROM_VIDEO(Search_Input_video_link.getText());
         } catch (Exception e) {
@@ -316,6 +308,18 @@ public class MainController implements Initializable {
 
     public static MainController getInstance() {
         return instance;
+    }
+
+    @FXML
+    private void Close_It(ActionEvent event) {
+        
+        MyTab.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                //Platform.exit();
+                System.exit(0);
+            }
+});
     }
 
 }
