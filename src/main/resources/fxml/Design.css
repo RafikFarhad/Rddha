@@ -4,12 +4,24 @@
 
 
 .tab{
-    -fx-background-insets: 0 1 0 1,0,0;
+    -fx-background-insets: 0 0 0 0,0,0;
 }
+
 .tab-pane .tab
 {
     -fx-background-color: #e6e6e6;
-
+}
+.tab-pane .tab:hover
+{
+    -fx-background-color: #bf8040;
+}
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #663300;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial";
+    -fx-padding: 10 20 10 20;
 }
 
 .tab-pane .tab:selected
@@ -17,32 +29,23 @@
     -fx-background-color: #3c3c3c;
 }
 
-.tab .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #828282;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-}
-
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
     -fx-text-fill: #96b946;
+    -fx-font-family: "Arial";
+    -fx-padding: 10 20 10 20;
 }
 .tab-pane:top *.tab-header-area {
-    -fx-background-insets: 0, 0 0 1 0;
- /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
-    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overriden as 5 2 0 0 */
+    -fx-background-insets: 1, 0 0 1 0;
 }
 
 .tab-pane:bottom *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
- /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
     -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overriden as 5 2 0 0 */
 }
 
 .tab-pane:right *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
- /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
     -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overriden as 5 2 0 0 */
 }
 .tab-pane:left *.tab-header-area {
@@ -74,4 +77,50 @@
 }
 .HeadLine{
     -fx-background-color:  #ff99dd;
+}
+.result{
+    -fx-background-color: #61e89b;
+    -fx-background-radius: 5;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5;
+    -fx-alignment: CENTER;
+    -fx-font-family: Arial;
+    -fx-color: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px 10px 20px;
+}
+.result:hover{
+    -fx-font-size: 25px;
+    -fx-padding: 10px 20px 10px 20px;
+}
+
+.download{
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 15px;
+    -fx-padding: 10 20 10 20;
+}
+.download:hover{
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#191d22 100%, #1f2429 20%, #38424b 0%),
+        linear-gradient(#191d22, #20262b),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 20px;
+    -fx-padding: 10 20 10 20;
 }

@@ -1,6 +1,5 @@
 package farhad.rddha.Controller;
 
-import com.sun.media.jfxmediaimpl.platform.Platform;
 import farhad.rddha.DATA;
 import farhad.rddha.MainApp;
 import java.io.File;
@@ -22,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -39,7 +39,7 @@ public class MainController implements Initializable {
     /// Personally Declared Variable
     public Button[] Play_Button_Array;// = new Button[55];
     public Button[] Download_Button_Array = new Button[55];
-    public TextArea[] Result_Title = new TextArea[500];
+    public Label[] Result_Title = new Label[50];
     public ImageView[] Thumbnail_Image = new ImageView[55];
     public String inputQuery;
     public int Now_Playing = 0;
@@ -99,6 +99,7 @@ public class MainController implements Initializable {
             Download_Button_Array[i] = new Button("Download");
             Download_Button_Array[i].setPrefHeight(170);
             Download_Button_Array[i].setPrefWidth(300);
+            Download_Button_Array[i].getStyleClass().add("download");
 
             Download_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
@@ -121,12 +122,11 @@ public class MainController implements Initializable {
                 }
             });
             /// For Showing Title 
-            Result_Title[i] = new TextArea(Title[i]);
+            Result_Title[i] = new Label(Title[i]);
             Result_Title[i].setPrefHeight(170);
             Result_Title[i].setPrefWidth(300);
-            Result_Title[i].setEditable(false);
             Result_Title[i].setWrapText(true);
-
+            Result_Title[i].getStyleClass().add("result");
             ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
@@ -152,25 +152,31 @@ public class MainController implements Initializable {
         popup.setTitle("Select Format");
         popup.setScene(scene);
         popup.setResizable(false);
+        popup.getIcons().add(new Image(getClass().getResource("/pics/youtube2.png").toString()));
         popup.show();
 
     }
 
-    public void TESTINGG(String format, final String load) throws MalformedURLException, IOException {
+    public void TESTINGG(String format, String load) throws MalformedURLException, IOException {
 
         final DATA a = new DATA(format, load);
         Thread t = new Thread(a);
+        t.setDaemon(true);
         t.start();
         //System.out.println("Download Thread started :D +++++++++++++++++++++++++");
-        a.HeadLine.setText("Downloading -- " + MainApp.current_title);
+        int LengthofTitle = MainApp.current_title.length();
+        if (LengthofTitle > 20) {
+            LengthofTitle = 20;
+        }
+        final String Short_Title = MainApp.current_title;
+        a.HeadLine.setText("Downloading -- " + Short_Title + "." + format);
         progressbar_vbox.getChildren().addAll(a.bar, a.HeadLine);
         play_vbox.getChildren().addAll(a.play);
         stop_vbox.getChildren().addAll(a.stop);
 
-//        if (MainApp.dest_location == null) {
-//            CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
-//        }
-        MainApp.dest_location = "/home/rafikfarhad/Desktop";
+        if (MainApp.dest_location == null) {
+            CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
+        }
 
         Task task2 = null;
         task2 = new Task<Void>() {
@@ -181,11 +187,13 @@ public class MainController implements Initializable {
                     d = a.downloaded;
                     s = a.size;
                     updateProgress(d, s);
-                    sleep(500);
+                    sleep(50);
                     if (s != -1 && d >= s) {
                         a.play.setDisable(true);
+                        a.proxy.fire();
                         super.cancel();
-                    } else if (a.getStatus() == 3) {
+                    } 
+                    else if (a.getStatus() == 3) {
                         super.cancel();
                     }
                     if (isDone()) {
@@ -195,7 +203,12 @@ public class MainController implements Initializable {
             }
         };
         a.bar.progressProperty().bind(task2.progressProperty());
-
+        a.proxy.setOnAction(new EventHandler(){
+            @Override
+            public void handle(Event event) {
+                
+            }
+        });
         a.stop.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -210,28 +223,24 @@ public class MainController implements Initializable {
         a.play.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                int LengthofTitle = MainApp.current_title.length();
-                if (LengthofTitle > 20) {
-                    LengthofTitle = 20;
-                }
+
                 if (a.on == 1) {
                     a.play.setText("▶");
                     a.play.getStyleClass().add("play-pause-button-2");
                     a.on = 0;
 
-                    a.HeadLine.setText("Paused        -- " + MainApp.current_title.substring(0, LengthofTitle) + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.HeadLine.setText(Short_Title + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
                     a.go_to_pause();
-                } 
-                else {
+                } else {
                     a.play.setText("▮▮");
                     a.play.getStyleClass().add("play-pause-button");
                     a.on = 1;
-                    a.HeadLine.setText("Downloading -- " + MainApp.current_title.substring(0, LengthofTitle) + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
+                    a.HeadLine.setText(Short_Title + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
                     a.go_to_resume();
                 }
             }
         });
-        final Thread thread2 = new Thread(task2);
+        Thread thread2 = new Thread(task2);
         thread2.start();
         MyTab.getSelectionModel().select(1);
     }
@@ -276,7 +285,7 @@ public class MainController implements Initializable {
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException {
 //        MainApp.current_title = "FARHAD";
-//        TESTINGG("mp4", "https://r2---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?upn=teRXWI8lisI&initcwndbps=577500&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&source=youtube&pl=24&sver=3&ratebypass=yes&requiressl=yes&ipbits=0&mime=video%2Fmp4&itag=18&mn=sn-jtcxgb5ux-1tae&mm=31&signature=413AEC2BD0566822C52B8F7E86DF0647FB095B7D.D1C2EADEC07852C1D497DC279D96344909AEB833&ms=au&mv=m&mt=1471373550&dur=325.590&key=yt6&pcm2cms=yes&lmt=1445406788355487&ip=27.147.226.78&expire=1471395852&id=o-ABGw8AiUAz_5OYDWTKbVNla-w9DrOGZ3ZdwBg4IuLYRT&title=Ei%20Bidaye%20Artcell");
+//        TESTINGG("mp4", "https://r3---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?requiressl=yes&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&ipbits=0&ratebypass=yes&initcwndbps=576250&signature=944FC7B8932F99E778D2D7C1B4F3DA41B76F867A.4FDB6B87F96CAE5AB2C780BB8512DA8906AB92D8&upn=FxONw4pmUcA&mime=video%2Fmp4&mt=1471456903&sver=3&expire=1471479306&itag=18&pl=24&source=youtube&mv=m&ms=au&ip=27.147.226.78&key=yt6&lmt=1411010334962045&fexp=9406175%2C9408350%2C9419452%2C9421733%2C9422596%2C9428398%2C9431012%2C9433043%2C9433096%2C9433221%2C9433946%2C9435399%2C9435526%2C9436102%2C9436618%2C9438327%2C9438662%2C9439474%2C9439580%2C9439890%2C9440282%2C9440879%2C9440927%2C9441535%2C9442162%2C9442356%2C9442424%2C9442426%2C9442962%2C9443478%2C9443651%2C9444666&mm=31&mn=sn-jtcxgb5ux-1tae&id=o-AFAZntBNr9hNbb89e6gdmnIE3_hOZXdhnBM97nEjwthX&dur=0.998&ei=qqm0V97AJZGWogP4pbfgDA&title=Shortest%20Video%20on%20Youtube");
 //        if (1 + 1 == 2) {
 //            return;
 //        }
@@ -312,14 +321,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void Close_It(ActionEvent event) {
-        
-        MyTab.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                //Platform.exit();
-                System.exit(0);
-            }
-});
+        System.out.println("Close_It Clicked.....................");
+        MyTab.getScene().getWindow().hide();
     }
 
 }

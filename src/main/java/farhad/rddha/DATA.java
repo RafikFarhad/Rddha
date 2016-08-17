@@ -23,7 +23,7 @@ import javafx.scene.control.ProgressBar;
 public class DATA extends Observable implements Runnable {
 
     public ProgressBar bar;
-    public Button play, stop;
+    public Button play, stop, proxy;
     public Label HeadLine;
     public int on;
     public String format, load;
@@ -32,6 +32,7 @@ public class DATA extends Observable implements Runnable {
         bar = new ProgressBar();
         play = new Button("▮▮");
         stop = new Button("■");
+        proxy = new Button();
         HeadLine = new Label("");
         bar.setPrefSize(660, 20);
         play.setPrefSize(40, 40);
@@ -39,9 +40,10 @@ public class DATA extends Observable implements Runnable {
         stop.setPrefSize(40, 40);
         stop.setAlignment(Pos.CENTER);
         HeadLine.setPrefSize(660, 20);
+        HeadLine.getStyleClass().add("HeadLine");
         play.getStyleClass().add("play-pause-button");
         stop.getStyleClass().add("stop-button");
-        HeadLine.getStyleClass().add("HeadLine");
+        
         on = 1;
         this.format = format;
         this.load = load;
@@ -77,7 +79,6 @@ public class DATA extends Observable implements Runnable {
         return size;
     }
 
-    
     // Get this download's status.
     public int getStatus() {
         return status;
@@ -124,6 +125,7 @@ public class DATA extends Observable implements Runnable {
 //        return file;
 //    }
     // Download file.
+
     public void run() {
         file = null;
         InputStream stream = null;
@@ -158,7 +160,7 @@ public class DATA extends Observable implements Runnable {
             // Open file and seek to the end of it.
             String space = MainApp.dest_location;
             String fileName = MainApp.current_title + "." + format;
-            file = new RandomAccessFile(space+"/"+fileName, "rw");
+            file = new RandomAccessFile(space + "/" + fileName, "rw");
             file.seek(downloaded);
 
             stream = connection.getInputStream();
@@ -205,6 +207,7 @@ public class DATA extends Observable implements Runnable {
             }
         }
     }
+
     // Notify observers that this download's status has changed.
     private void stateChanged() {
         setChanged();

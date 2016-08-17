@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.io.FileUtils;
@@ -33,8 +34,8 @@ public class MainApp extends Application {
     public static String current;
     public static String current_title;
     public static String keys;
-
-    public static String dest_location = null;
+    
+    public static String dest_location = System.getProperty("user.home") + "/Desktop";
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -46,6 +47,7 @@ public class MainApp extends Application {
         stage.setTitle("RDDHA 1.0");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.getIcons().add(new Image(getClass().getResource("/pics/youtube1.png").toString()));
         stage.show();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

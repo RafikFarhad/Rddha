@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -50,8 +51,7 @@ public class PopupController implements Initializable {
     @SuppressWarnings("empty-statement")
     public void initialize(URL location, ResourceBundle resources) {
 
-        choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
-
+        choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "MP3");
         ///                     MAKE REQUEST TO www.keepvid.com TO GIVE DIRECT LINK OF VIDEOS
         double m1 = 0, m2 = 0, g1 = 0, w = 0;
         try {
@@ -63,8 +63,8 @@ public class PopupController implements Initializable {
             MP4_480 = links.first().attr("abs:href");
             MP4_720 = links.get(1).attr("abs:href");
 
-            links = document.getElementsContainingOwnText("» Download 3GP «");
-            G3P = links.get(1).attr("abs:href");
+            links = document.getElementsContainingOwnText("» Download M4A «");
+            G3P = links.first().attr("abs:href");
             links = document.getElementsContainingOwnText("» Download WEBM «");
             WEBM = links.first().attr("abs:href");
             {
@@ -105,7 +105,7 @@ public class PopupController implements Initializable {
         }
         if (m1 > m2) {
             m720.setText("Not Available");
-            choice.getItems().remove(2);
+            choice.getItems().remove(0);
         } else {
             m720.setText(String.format("%,.2f MB", m2));
         };
@@ -136,8 +136,8 @@ public class PopupController implements Initializable {
                 MainController.getInstance().TESTINGG("MP4", MP4_480);
             } else if (my_format == "WEBM 360pixel") {
                 MainController.getInstance().TESTINGG("webm", WEBM);
-            } else if (my_format == "3GP 244pixel") {
-                MainController.getInstance().TESTINGG("3gp", G3P);
+            } else if (my_format == "MP3") {
+                MainController.getInstance().TESTINGG("mp3", G3P);
             }
         }catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
