@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -21,37 +22,38 @@
         <tabs>
           <Tab fx:id="tab1" text="Search">
                <content>
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: RED;">
+                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: #ccccb3;">
                      <children>
-                        <AnchorPane fx:id="SearchTabBackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="84.0" prefWidth="800.0" style="-fx-background-color: #ffff00;">
+                        <AnchorPane fx:id="SearchTabBackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="84.0" prefWidth="800.0" style="-fx-background-color: #66b3ff;">
                            <children>
                               <Button fx:id="btn1" layoutX="139.0" layoutY="55.0" mnemonicParsing="false" onAction="#bt1_pressed" prefHeight="26.0" prefWidth="163.0" style="-fx-background-radius: 15;" text="Get from playlist" />
-                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="24.0" prefHeight="26.0" prefWidth="418.0" promptText="Search on youtube!" style="-fx-background-radius: 10;" text="https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBsvRxJJOzG4r4k_zLKrnxl">
+                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="24.0" prefHeight="26.0" prefWidth="400.0" promptText="Search on youtube!" style="-fx-background-radius: 10;" text="https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBsvRxJJOzG4r4k_zLKrnxl">
                                  <font>
                                     <Font size="11.0" />
                                  </font></TextField>
-                              <TextField fx:id="Search_Input_video_link" layoutX="454.0" layoutY="24.0" prefHeight="26.0" prefWidth="336.0" promptText="www.youtube.com/**************" style="-fx-background-radius: 10;">
+                              <TextField fx:id="Search_Input_video_link" layoutX="468.0" layoutY="24.0" prefHeight="26.0" prefWidth="322.0" promptText="www.youtube.com/**************" style="-fx-background-radius: 10;">
                                  <font>
                                     <Font size="11.0" />
                                  </font></TextField>
                               <Button fx:id="video_link_btn" layoutX="558.0" layoutY="55.0" mnemonicParsing="false" onAction="#video_link_button_pressed" prefHeight="26.0" prefWidth="163.0" style="-fx-background-radius: 15;" text="Get from video link" />
                               <Label layoutX="151.0" layoutY="7.0" text="Youtube Playlist Link:" />
                               <Label layoutX="552.0" layoutY="7.0" text="Youtube Video Link:" />
+                              <ProgressIndicator fx:id="drama" layoutX="425.0" layoutY="21.0" progress="0.0" />
                            </children>
                         </AnchorPane>
                         <ScrollPane fitToWidth="true" maxHeight="800.0" maxWidth="-Infinity" prefHeight="370.0" prefWidth="800.0" AnchorPane.topAnchor="85.0">
                           <content>
                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0" style="-fx-background-color: white;">
                                  <children>
-                                    <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefWidth="320.0" spacing="10.0" style="-fx-background-color: #ff99dd;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" prefWidth="320.0" spacing="10.0" style="-fx-background-color: #b3e6ff;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox2" maxHeight="1.7976931348623157E308" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #ff99dd;" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox2" maxHeight="1.7976931348623157E308" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #b3e6ff;" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox3" maxHeight="1.7976931348623157E308" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #ff99dd;" AnchorPane.leftAnchor="620.0">
+                                    <VBox fx:id="vbox3" maxHeight="1.7976931348623157E308" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #b3e6ff;" AnchorPane.leftAnchor="620.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
@@ -67,9 +69,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane prefHeight="60.0" prefWidth="822.0" style="-fx-background-color: #66b3ff;">
+                        <AnchorPane prefHeight="60.0" prefWidth="822.0" style="-fx-background-color: #d4d4aa;">
                            <children>
-                              <TextArea fx:id="destination" editable="false" layoutX="7.0" layoutY="13.0" prefHeight="35.0" prefWidth="560.0" promptText="Destination Folder" wrapText="true">
+                              <TextArea fx:id="destination" editable="false" layoutX="7.0" layoutY="13.0" prefHeight="35.0" prefWidth="560.0" promptText="Destination Folder" style="-fx-background-radius: 10;" wrapText="true">
                                  <font>
                                     <Font size="12.0" />
                                  </font>
@@ -81,17 +83,17 @@
                            <content>
                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="1200.0" prefWidth="783.0">
                                  <children>
-                                    <VBox fx:id="progressbar_vbox" prefHeight="1200.0" prefWidth="680.0" spacing="10.0" style="-fx-background-color: #b3fff0;" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="progressbar_vbox" prefHeight="1200.0" prefWidth="680.0" spacing="10.0" style="-fx-background-color: #b3b3ff;" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="play_vbox" layoutX="680.0" prefHeight="1200.0" prefWidth="50.0" spacing="20.0" style="-fx-background-color: #b3fff0;" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="play_vbox" layoutX="680.0" prefHeight="1200.0" prefWidth="50.0" spacing="20.0" style="-fx-background-color: #b3b3ff;" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="stop_vbox" layoutX="730.0" prefHeight="1200.0" prefWidth="50.0" spacing="20.0" style="-fx-background-color: #b3fff0;">
+                                    <VBox fx:id="stop_vbox" layoutX="730.0" prefHeight="1200.0" prefWidth="50.0" spacing="20.0" style="-fx-background-color: #b3b3ff;">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
@@ -110,19 +112,19 @@
             </Tab>
         </tabs>
       </TabPane>
-      <MenuBar maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" style="-fx-background-color: #ff66b3;">
+      <MenuBar maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" style="-fx-background-color: #99d6ff;">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#Close_It" text="Exit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu fx:id="edit" mnemonicParsing="false" onAction="#CHANGE_API_POP_UP" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" text="Change Youtube API Key" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu fx:id="help" mnemonicParsing="false" onAction="#HELP" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>

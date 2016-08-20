@@ -2,6 +2,7 @@ package farhad.rddha.Controller;
 
 import farhad.rddha.DATA;
 import farhad.rddha.MainApp;
+import farhad.rddha.Searching_Thread;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
@@ -22,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -77,15 +80,25 @@ public class MainController implements Initializable {
     public VBox play_vbox;
     @FXML
     public VBox stop_vbox;
+    @FXML
+    private Menu edit;
+    @FXML
+    private Menu help;
+    @FXML
+    private ProgressIndicator drama;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         destination.setText(System.getProperty("user.home") + "/Desktop/");
-        vbox1.getChildren().removeAll();
-        vbox2.getChildren().removeAll();
-        vbox3.getChildren().removeAll();
+        drama.setVisible(false);
+    }
 
+    private void CLEARR_ALL() {
+        
+        vbox1.getChildren().clear();
+        vbox2.getChildren().clear();
+        vbox3.getChildren().clear();
     }
 
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
@@ -192,8 +205,7 @@ public class MainController implements Initializable {
                         a.play.setDisable(true);
                         a.proxy.fire();
                         super.cancel();
-                    } 
-                    else if (a.getStatus() == 3) {
+                    } else if (a.getStatus() == 3) {
                         super.cancel();
                     }
                     if (isDone()) {
@@ -203,10 +215,10 @@ public class MainController implements Initializable {
             }
         };
         a.bar.progressProperty().bind(task2.progressProperty());
-        a.proxy.setOnAction(new EventHandler(){
+        a.proxy.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                
+
             }
         });
         a.stop.setOnAction(new EventHandler() {
@@ -260,11 +272,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void bt1_pressed(ActionEvent event) throws IOException {
-
-        try {
-            MainApp.getInstance().GET_ALL_DATA_FROM_PLAYLIST(Search_Input.getText());
-        } catch (Exception e) {
+    public void bt1_pressed(ActionEvent event) throws IOException, InterruptedException {
+        CLEARR_ALL();
+        drama.setVisible(true);
+        Searching_Thread t = new Searching_Thread(1, Search_Input.getText());
+        t.start();
+        t.join();
+        if (t.error == 1) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
             alert.setHeaderText("Error in parsing data with youtube");
@@ -278,20 +292,25 @@ public class MainController implements Initializable {
             alert.showAndWait();
             return;
         }
+
+        drama.setProgress(1.0);
         Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
 
     }
 
     @FXML
-    public void video_link_button_pressed(ActionEvent event) throws IOException {
+    public void video_link_button_pressed(ActionEvent event) throws IOException, InterruptedException {
 //        MainApp.current_title = "FARHAD";
 //        TESTINGG("mp4", "https://r3---sn-jtcxgb5ux-1tae.googlevideo.com/videoplayback?requiressl=yes&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&ipbits=0&ratebypass=yes&initcwndbps=576250&signature=944FC7B8932F99E778D2D7C1B4F3DA41B76F867A.4FDB6B87F96CAE5AB2C780BB8512DA8906AB92D8&upn=FxONw4pmUcA&mime=video%2Fmp4&mt=1471456903&sver=3&expire=1471479306&itag=18&pl=24&source=youtube&mv=m&ms=au&ip=27.147.226.78&key=yt6&lmt=1411010334962045&fexp=9406175%2C9408350%2C9419452%2C9421733%2C9422596%2C9428398%2C9431012%2C9433043%2C9433096%2C9433221%2C9433946%2C9435399%2C9435526%2C9436102%2C9436618%2C9438327%2C9438662%2C9439474%2C9439580%2C9439890%2C9440282%2C9440879%2C9440927%2C9441535%2C9442162%2C9442356%2C9442424%2C9442426%2C9442962%2C9443478%2C9443651%2C9444666&mm=31&mn=sn-jtcxgb5ux-1tae&id=o-AFAZntBNr9hNbb89e6gdmnIE3_hOZXdhnBM97nEjwthX&dur=0.998&ei=qqm0V97AJZGWogP4pbfgDA&title=Shortest%20Video%20on%20Youtube");
 //        if (1 + 1 == 2) {
 //            return;
 //        }
-        try {
-            MainApp.getInstance().GET_ALL_DATA_FROM_VIDEO(Search_Input_video_link.getText());
-        } catch (Exception e) {
+        CLEARR_ALL();
+        drama.setVisible(true);
+        Searching_Thread t = new Searching_Thread(2, Search_Input_video_link.getText());
+        t.start();
+        t.join();
+        if (t.error == 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Warning Dialog");
             alert.setHeaderText("Error in parsing data with youtube");
@@ -306,7 +325,9 @@ public class MainController implements Initializable {
             return;
         }
 
+        drama.setProgress(1.0);
         Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+
     }
 
     private static MainController instance;
@@ -323,6 +344,23 @@ public class MainController implements Initializable {
     private void Close_It(ActionEvent event) {
         System.out.println("Close_It Clicked.....................");
         MyTab.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void CHANGE_API_POP_UP(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChangeAPI.fxml"));
+        Stage popup = new Stage();
+        Scene scene = new Scene(root);
+        popup.setTitle("Change Youtube API");
+        popup.setScene(scene);
+        popup.setResizable(false);
+        popup.getIcons().add(new Image(getClass().getResource("/pics/youtube2.png").toString()));
+        popup.show();
+    }
+
+    @FXML
+    private void HELP(ActionEvent event) {
     }
 
 }

@@ -34,7 +34,7 @@ public class MainApp extends Application {
     public static String current;
     public static String current_title;
     public static String keys;
-    
+
     public static String dest_location = System.getProperty("user.home") + "/Desktop";
 
     @Override
@@ -55,13 +55,13 @@ public class MainApp extends Application {
                 Platform.exit();
                 System.exit(0);
             }
-});
+        });
     }
 
     void LOAD_SNIPPET_AND_CONTENT_DETAILS_FILE() throws IOException {
 
         BufferedReader br = null;
-        URL inputUrl = getClass().getResource("/userfile/youtube.properties");
+        URL inputUrl = getClass().getResource("/userfile/youtube.txt");
         File dest1 = new File("upload/rddh_log.txt");
         FileUtils.copyURLToFile(inputUrl, dest1);
 
@@ -72,112 +72,7 @@ public class MainApp extends Application {
         keys = line;
     }
 
-    public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws Exception {
-
-        query = "=" + query;
-        query = query.substring(query.lastIndexOf('=') + 1);
-        //System.out.println("QUERY: " + query);
-
-        String jsonData = "";
-        String jsonData2 = "";
-
-        {
-            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId="
-                    + query + "&key=" + keys);
-            URLConnection yc = yahoo.openConnection();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                jsonData2 += inputLine;
-                //System.out.println(inputLine);
-            }
-            in.close();
-
-        }
-        {
-            URL yahoo = new URL("https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId="
-                    + query + "&key=" + keys);
-            URLConnection yc = yahoo.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                jsonData += inputLine;
-                //System.out.println(inputLine);
-            }
-            in.close();
-        }
-
-        JSONObject main_obj = new JSONObject(jsonData);
-
-        JSONObject main_obj2 = new JSONObject(jsonData2);
-
-        //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
-        total_item = 0;
-
-        JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
-        total_item = pageInfo.getInt("totalResults");
-        JSONArray jinishpati = main_obj.getJSONArray("items");
-        JSONArray jinishpati2 = main_obj2.getJSONArray("items");
-        if (total_item > 48) {
-            total_item = 48;
-        }
-        for (int i = 0; i < total_item; i++) {
-
-            Result[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getString("title");
-            Video_Link[i] = jinishpati.getJSONObject(i).getJSONObject("contentDetails").getString("videoId");
-            Thumbnail_Link[i] = jinishpati2.getJSONObject(i).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("high").getString("url");
-            //System.out.println(Result[i]);
-            //System.out.println(Video_Link[i]);
-            //System.out.println(Thumbnail_Link[i]);
-
-        }
-    }
-
-    public void GET_ALL_DATA_FROM_VIDEO(String query) throws IOException {
-
-        query = "=" + query;
-        query = query.substring(query.lastIndexOf('=') + 1);
-        System.out.println(query + " -> \n" + keys + "\n");
-        String jsonData = "";
-        String jsonData2 = "";
-        try {
-            {
-                URL yahoo = new URL("https://www.googleapis.com/youtube/v3/videos?id="
-                        + query + "&part=snippet&key=" + keys);
-
-                System.out.println(yahoo.toString() + "\n");
-                URLConnection yc = yahoo.openConnection();
-                BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    jsonData2 += inputLine;
-                    //System.out.println(inputLine);
-                }
-                in.close();
-            }
-        } catch (Exception e) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Warning Dialog");
-            alert.setHeaderText("Invalid Playlist Link");
-            alert.setContentText("Please check your playlist link, it may either be broken \n"
-                    + "or may be this playlist is not public");
-            alert.showAndWait();
-            return;
-        }
-
-        JSONObject main_obj2 = new JSONObject(jsonData2);
-
-        //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
-        JSONArray jinishpati2 = main_obj2.getJSONArray("items");
-        total_item = 0;
-        Result[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getString("title");
-        Video_Link[0] = query;
-        Thumbnail_Link[0] = jinishpati2.getJSONObject(0).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("high").getString("url");
-        total_item = 1;
-
-    }
+    
 //    public void SEARCH_IT(String aa) {
 //
 //        Properties properties = new Properties();
