@@ -42,11 +42,11 @@ public class ChangeAPIController implements Initializable {
 
         try {
             String line = myAPI.getText();
-            PrintWriter out = new PrintWriter("upload/rddh_log.txt");
-            out.println(line);
-            File dest2 = new File("upload/rddh_log.txt");
-            File dest1 = new File(getClass().getResource("/userfile/youtube.txt").toString());
-            FileUtils.copyFile(dest2, dest1, true);
+//            PrintWriter out = new PrintWriter("upload/rddh_log.txt");
+//            out.println(line);
+//            File dest2 = new File("upload/rddh_log.txt");
+//            File dest1 = new File(getClass().getResource("/userfile/youtube.txt").toString());
+//            FileUtils.copyFile(dest2, dest1, true);
             apiOK.getScene().getWindow().hide();
         } catch (Exception e) {
             System.out.println("Exception in API OK button + " + e);
@@ -54,8 +54,7 @@ public class ChangeAPIController implements Initializable {
     }
 
     @FXML
-    private void API_CANCEL_PRESSED(ActionEvent event
-    ) {
+    private void API_CANCEL_PRESSED(ActionEvent event){
         apiOK.getScene().getWindow().hide();
     }
 

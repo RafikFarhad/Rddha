@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Observable;
+import java.util.Observer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,7 +21,7 @@ import javafx.scene.control.ProgressBar;
  *
  * @author rafikfarhad
  */
-public class DATA extends Observable implements Runnable {
+public class DATA extends Observable implements Runnable, Observer {
 
     public ProgressBar bar;
     public Button play, stop, proxy;
@@ -53,21 +54,21 @@ public class DATA extends Observable implements Runnable {
         size = -1;
         downloaded = 0;
         status = DOWNLOADING;
-
+        addObserver(this);
         // Begin the download.
         download();
 
     }
 
 // Max size of download buffer.
-    private static final int MAX_BUFFER_SIZE = 1024;
+    private static final int MAX_BUFFER_SIZE = 2048;
 
     // These are the status codes.
-    public static final int DOWNLOADING = 0;
-    public static final int PAUSED = 1;
-    public static final int COMPLETE = 2;
-    public static final int CANCELLED = 3;
-    public static final int ERROR = 4;
+    public final int DOWNLOADING = 0;
+    public final int PAUSED = 1;
+    public final int COMPLETE = 2;
+    public final int CANCELLED = 3;
+    public final int ERROR = 4;
 
     private URL url; // download URL
     public int size; // size of download in bytes
@@ -212,6 +213,16 @@ public class DATA extends Observable implements Runnable {
     private void stateChanged() {
         setChanged();
         notifyObservers();
+        bar.setProgress((double)downloaded/size);
+        System.out.println("stateChanged() " + getStatus());
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        System.out.println("Updating... + " + downloaded);
+        //http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1391-how-to-create-a-download-manager-in-java.html
+
     }
 
 }

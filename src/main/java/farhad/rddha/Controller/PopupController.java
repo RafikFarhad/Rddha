@@ -131,13 +131,13 @@ public class PopupController implements Initializable {
             if (my_format == null) {
                 return;
             } else if (my_format == "MP4 720pixel") {
-                MainController.getInstance().TESTINGG("MP4", MP4_720);
+                MainController.getInstance().TESTINGG("mp4", MP4_720);
             } else if (my_format == "MP4 480pixel") {
-                MainController.getInstance().TESTINGG("MP4", MP4_480);
+                MainController.getInstance().TESTINGG("mp4", MP4_480);
             } else if (my_format == "WEBM 360pixel") {
                 MainController.getInstance().TESTINGG("webm", WEBM);
             } else if (my_format == "MP3") {
-                MainController.getInstance().TESTINGG("mp3", G3P);
+                MainController.getInstance().TESTINGG("m4a", G3P);
             }
         }catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

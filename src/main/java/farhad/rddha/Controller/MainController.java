@@ -191,30 +191,32 @@ public class MainController implements Initializable {
             CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
         }
 
-        Task task2 = null;
-        task2 = new Task<Void>() {
-            @Override
-            public Void call() throws MalformedURLException, IOException, InterruptedException {
-                int d, s;
-                for (;;) {
-                    d = a.downloaded;
-                    s = a.size;
-                    updateProgress(d, s);
-                    sleep(50);
-                    if (s != -1 && d >= s) {
-                        a.play.setDisable(true);
-                        a.proxy.fire();
-                        super.cancel();
-                    } else if (a.getStatus() == 3) {
-                        super.cancel();
-                    }
-                    if (isDone()) {
-                        super.cancel();
-                    }
-                }
-            }
-        };
-        a.bar.progressProperty().bind(task2.progressProperty());
+//        Task task2 = null;
+//        task2 = new Task<Void>() {
+//            @Override
+//            public Void call() throws MalformedURLException, IOException, InterruptedException {
+//                int d, s;
+//                for (;;) {
+//                    d = a.downloaded;
+//                    s = a.size;
+//                    updateProgress(d, s);
+//                    sleep(50);
+//                    //if (s != -1 && d >= s) {
+//                    if (a.getStatus()==2) {
+//                        a.play.setDisable(true);
+//                        a.proxy.fire();
+//                        System.out.println("Completed Download");
+//                        super.cancel();
+//                    } else if (a.getStatus() == 3) {
+//                        super.cancel();
+//                    }
+//                    if (isDone()) {
+//                        super.cancel();
+//                    }
+//                }
+//            }
+//        };
+//        a.bar.progressProperty().bind(task2.progressProperty());
         a.proxy.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -252,8 +254,8 @@ public class MainController implements Initializable {
                 }
             }
         });
-        Thread thread2 = new Thread(task2);
-        thread2.start();
+//        Thread thread2 = new Thread(task2);
+//        thread2.start();
         MyTab.getSelectionModel().select(1);
     }
 
