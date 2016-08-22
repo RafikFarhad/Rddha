@@ -56,7 +56,7 @@ public class PopupController implements Initializable {
         double m1 = 0, m2 = 0, g1 = 0, w = 0;
         try {
             URL yahoo = new URL("http://keepvid.com/?url=https://www.youtube.com/watch?v=" + MainApp.current);
-
+            
             Document document = Jsoup.connect(yahoo.toString()).get();
 
             Elements links = document.getElementsContainingOwnText("» Download MP4 «");
@@ -101,6 +101,7 @@ public class PopupController implements Initializable {
             }
 
         } catch (Exception e) {
+            System.out.println("Exceptionn in fetching file size + " + e);
             e.printStackTrace();
         }
         if (m1 > m2) {
