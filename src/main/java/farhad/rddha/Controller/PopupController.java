@@ -155,7 +155,6 @@ public class PopupController implements Initializable {
             return;
         }
         ok_button.getScene().getWindow().hide();
-
     }
 
 }

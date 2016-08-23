@@ -5,21 +5,19 @@
  */
 package farhad.rddha;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 
 /**
  *
@@ -28,25 +26,23 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 public class DATA extends Observable implements Runnable {
 
     public ProgressBar bar;
-    public Button play, stop, proxy;
+    public Button stop, restart;
     public Label HeadLine;
     public int on;
     public String format, load, title;
 
     public DATA(String format, String load) throws MalformedURLException {
         bar = new ProgressBar();
-        play = new Button("▮▮");
-        stop = new Button("■");
-        proxy = new Button();
+        restart = new Button();
+        stop = new Button();
         HeadLine = new Label("");
         bar.setPrefSize(660, 20);
-        play.setPrefSize(40, 40);
-        play.setAlignment(Pos.CENTER);
+        restart.setPrefSize(40, 40);
         stop.setPrefSize(40, 40);
         stop.setAlignment(Pos.CENTER);
         HeadLine.setPrefSize(660, 20);
         HeadLine.getStyleClass().add("HeadLine");
-        play.getStyleClass().add("play-pause-button");
+        restart.getStyleClass().add("restart-button");
         stop.getStyleClass().add("stop-button");
         String space = MainApp.dest_location;
         title = space + "/" + MainApp.current_title + "." + format;
@@ -79,10 +75,10 @@ public class DATA extends Observable implements Runnable {
     public static final int ERROR = 4;
      
     private URL url; // download URL
-    private int size; // size of download in bytes
+    public int size; // size of download in bytes
     private int downloaded; // number of bytes downloaded
-    private int status; // current status of download
-     
+    public int status; // current status of download
+    public File file;
     
      
     // Get this download's URL.
@@ -144,7 +140,7 @@ public class DATA extends Observable implements Runnable {
      
     // Download file.
     public void run() {
-        RandomAccessFile file = null;
+        file = null;
         InputStream stream = null;
          
         try {
@@ -159,10 +155,7 @@ public class DATA extends Observable implements Runnable {
             // Connect to server.
             connection.connect();
              
-            // Make sure response code is in the 200 range.
-            if (connection.getResponseCode() / 100 != 2) {
-                error();
-            }
+            
              
             // Check for valid content length.
             int contentLength = connection.getContentLength();
@@ -177,31 +170,9 @@ public class DATA extends Observable implements Runnable {
                 stateChanged();
             }
              
-            // Open file and seek to the end of it.
-            file = new RandomAccessFile(title, "rw");
-            file.seek(downloaded);
-             
+            file = new File(title);
             stream = connection.getInputStream();
-            while (status == DOWNLOADING) {
-        /* Size buffer according to how much of the
-           file is left to download. */
-                byte buffer[];
-                if (size - downloaded > MAX_BUFFER_SIZE) {
-                    buffer = new byte[MAX_BUFFER_SIZE];
-                } else {
-                    buffer = new byte[size - downloaded];
-                }
-                 
-                // Read from server into buffer.
-                int read = stream.read(buffer);
-                if (read == -1)
-                    break;
-                 
-                // Write buffer to file.
-                file.write(buffer, 0, read);
-                downloaded += read;
-                stateChanged();
-            }
+            Files.copy(stream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
              
       /* Change status to complete if this point was
          reached because downloading has finished. */
@@ -212,13 +183,7 @@ public class DATA extends Observable implements Runnable {
         } catch (Exception e) {
             error();
         } finally {
-            // Close file.
-            if (file != null) {
-                try {
-                    file.close();
-                } catch (Exception e) {}
-            }
-             
+                         
             // Close connection to server.
             if (stream != null) {
                 try {
@@ -230,9 +195,9 @@ public class DATA extends Observable implements Runnable {
      
     // Notify observers that this download's status has changed.
     private void stateChanged() {
-        setChanged();
-        notifyObservers();
-        System.out.println("stateChanged() -> " + downloaded);
+//        setChanged();
+//        notifyObservers();
+        System.out.println("stateChanged() -> " + downloaded  + " -> " + size);
     }
 
 //    // Max size of download buffer.

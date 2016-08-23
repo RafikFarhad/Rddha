@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ProgressIndicator;
@@ -43,6 +44,7 @@ public class MainController implements Initializable {
     public Button[] Play_Button_Array;// = new Button[55];
     public Button[] Download_Button_Array = new Button[55];
     public Label[] Result_Title = new Label[50];
+    public Label[] No_Title = new Label[50];
     public ImageView[] Thumbnail_Image = new ImageView[55];
     public String inputQuery;
     public int Now_Playing = 0;
@@ -86,23 +88,32 @@ public class MainController implements Initializable {
     private Menu help;
     @FXML
     private ProgressIndicator drama;
+    @FXML
+    private Button all_load;
+    @FXML
+    private ChoiceBox<String> all_choice;
+    @FXML
+    private VBox vbox0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         destination.setText(System.getProperty("user.home") + "/Desktop/");
         drama.setVisible(false);
+        all_load.setDisable(true);
+        all_choice.getItems().addAll("MP4 480pixel", "WEBM 360pixel", "M4A");
     }
 
     private void CLEARR_ALL() {
-        
+
         vbox1.getChildren().clear();
         vbox2.getChildren().clear();
         vbox3.getChildren().clear();
     }
 
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
-
+        
+        vbox0.getChildren().clear();
         vbox1.getChildren().clear();
         vbox2.getChildren().clear();
         vbox3.getChildren().clear();
@@ -110,10 +121,10 @@ public class MainController implements Initializable {
 
             /// Buttons for Download 
             Download_Button_Array[i] = new Button("Download");
-            Download_Button_Array[i].setPrefHeight(170);
-            Download_Button_Array[i].setPrefWidth(300);
+            Download_Button_Array[i].setMinHeight(200);
+            Download_Button_Array[i].setMinWidth(140);
             Download_Button_Array[i].getStyleClass().add("download");
-
+            
             Download_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
@@ -136,17 +147,24 @@ public class MainController implements Initializable {
             });
             /// For Showing Title 
             Result_Title[i] = new Label(Title[i]);
-            Result_Title[i].setPrefHeight(170);
-            Result_Title[i].setPrefWidth(300);
+            Result_Title[i].setMinHeight(200);
+            Result_Title[i].setMinWidth(390);
             Result_Title[i].setWrapText(true);
             Result_Title[i].getStyleClass().add("result");
+            No_Title[i] = new Label(String.valueOf(i+1));
+            No_Title[i].setMinHeight(200);
+            No_Title[i].setMinWidth(40);
+            No_Title[i].setWrapText(true);
+            No_Title[i].getStyleClass().add("result");
+            
             ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             Thumbnail_Image[i].setImage(new Image(Thumbnail_Link[i]));
-            Thumbnail_Image[i].setFitHeight(170);
-            Thumbnail_Image[i].setFitWidth(300);
+            Thumbnail_Image[i].setFitHeight(200);
+            Thumbnail_Image[i].setFitWidth(190);
             vbox1.getChildren().addAll(Thumbnail_Image[i]);
+            vbox0.getChildren().addAll(No_Title[i]);
             vbox2.getChildren().addAll(Result_Title[i]);
             vbox3.getChildren().addAll(Download_Button_Array[i]);  ///Add to allignment
 
@@ -184,45 +202,51 @@ public class MainController implements Initializable {
         final String Short_Title = MainApp.current_title;
         a.HeadLine.setText("Downloading -- " + Short_Title + "." + format);
         progressbar_vbox.getChildren().addAll(a.bar, a.HeadLine);
-        play_vbox.getChildren().addAll(a.play);
+        play_vbox.getChildren().addAll(a.restart);
         stop_vbox.getChildren().addAll(a.stop);
 
         if (MainApp.dest_location == null) {
             CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
         }
 
-//        Task task2 = null;
-//        task2 = new Task<Void>() {
-//            @Override
-//            public Void call() throws MalformedURLException, IOException, InterruptedException {
-//                int d, s;
-//                for (;;) {
-//                    d = a.downloaded;
-//                    s = a.size;
-//                    updateProgress(d, s);
-//                    sleep(50);
-//                    //if (s != -1 && d >= s) {
-//                    if (a.getStatus()==2) {
-//                        a.play.setDisable(true);
-//                        a.proxy.fire();
-//                        System.out.println("Completed Download");
-//                        super.cancel();
-//                    } else if (a.getStatus() == 3) {
-//                        super.cancel();
-//                    }
-//                    if (isDone()) {
-//                        super.cancel();
-//                    }
-//                }
-//            }
-//        };
-//        a.bar.progressProperty().bind(task2.progressProperty());
-        a.proxy.setOnAction(new EventHandler() {
+        Task task2 = null;
+        task2 = new Task<Void>() {
             @Override
-            public void handle(Event event) {
-
+            public Void call() throws MalformedURLException, IOException, InterruptedException {
+                long d, s;
+                for (;;) {
+                    //System.out.println("for loop initieted");
+                    if (a.file != null) {
+                        d = a.file.length();
+                    } else {
+                        d = 0l;
+                    }
+                    s = a.size;
+                    //System.out.println("d = " + d + " s = " + s);
+                    updateProgress(d, s);
+                    sleep(500);
+                    //if (s != -1 && d >= s) {
+                    if (a.status == 2) {
+                        a.restart.setDisable(true);
+                        System.out.println("Completed Download");
+                        done();
+                        super.cancel();
+                        break;
+                    } else if (a.getStatus() == 3) {
+                        super.cancel();
+                        break;
+                    }
+                    if (isDone()) {
+                        super.cancel();
+                        break;
+                    }
+                }
+                return null;
             }
-        });
+
+        };
+        a.bar.progressProperty().bind(task2.progressProperty());
+
         a.stop.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -234,28 +258,14 @@ public class MainController implements Initializable {
                 stop_vbox.getChildren().remove(id / 2);
             }
         });
-        a.play.setOnAction(new EventHandler() {
+        a.restart.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-
-                if (a.on == 1) {
-                    a.play.setText("▶");
-                    a.play.getStyleClass().add("play-pause-button-2");
-                    a.on = 0;
-
-                    //a.HeadLine.setText(Short_Title + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
-                    //a.go_to_pause();
-                } else {
-                    a.play.setText("▮▮");
-                    a.play.getStyleClass().add("play-pause-button");
-                    a.on = 1;
-                    //a.HeadLine.setText(Short_Title + "..." + a.format + " (" + String.format("%,.2f MB)", a.size / 1024.0 / 1024.0));
-                    //a.go_to_resume();
-                }
+                a.resume();
             }
         });
-//        Thread thread2 = new Thread(task2);
-//        thread2.start();
+        Thread thread2 = new Thread(task2);
+        thread2.start();
         MyTab.getSelectionModel().select(1);
     }
 
@@ -303,7 +313,7 @@ public class MainController implements Initializable {
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException, InterruptedException {
         MainApp.current_title = "FARHAD";
-        TESTINGG("mp4", "https://r5---sn-p5qlsnz6.googlevideo.com/videoplayback?lmt=1457939870484316&sver=3&initcwndbps=36250&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&ipbits=0&expire=1471920057&source=youtube&itag=18&mime=video%2Fmp4&key=yt6&nh=IgpwcjAzLmlhZDA3KgkxMjcuMC4wLjE&ei=WWO7V5_nBYqtc-altLgE&upn=iYpJdOCdNIc&mm=31&mn=sn-p5qlsnz6&pl=24&id=o-AGNGU2FkGBZ46A4_Fhpgq8bCLOM-pML2-YNQnloRFpX4&dur=267.609&ip=159.253.144.86&ratebypass=yes&mt=1471897900&mv=m&fexp=9407191%2C9419451%2C9422596%2C9426731%2C9427833%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433221%2C9433946%2C9435526%2C9438227%2C9438327%2C9438662%2C9438731%2C9439580%2C9439882%2C9440431%2C9440799%2C9440927%2C9441191%2C9441768%2C9442424%2C9442426%2C9443259%2C9443739%2C9444229%2C9445058%2C9445143&ms=au&signature=1111F20FE0DF1272E52CEF808EF8C8FA16DA7738.544DD208E20AEB6D755244E3495CC0F2D9C6FFFD&title=Emon+Jodi+Hoto+%28%E0%A6%8F%E0%A6%AE%E0%A6%A8+%E0%A6%AF%E0%A6%A6%E0%A6%BF+%E0%A6%B9%E0%A6%A4%E0%A7%8B%29+by+Joler+Gaan");
+        TESTINGG("mp4", "http://r18---sn-q4f7snsk.googlevideo.com/videoplayback?itag=18&ipbits=0&key=yt6&pl=24&dur=267.609&sver=3&expire=1471987991&nh=IgpwcjA1LmRmdzA2Kgs1MC45Ny4xNi4zNg&ratebypass=yes&initcwndbps=2868750&ei=tmy8V4bmOMPtcPSynfAP&id=o-AMu0Wow_DdM88G3dbZUxqfVFV5oAUFEgKj5qQ8BPW2z-&upn=vVgXByqkkUg&lmt=1457939870484316&ip=159.253.144.86&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9419451%2C9422596%2C9426731%2C9427833%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433221%2C9433946%2C9435526%2C9438227%2C9438327%2C9438662%2C9438731%2C9439580%2C9439882%2C9440431%2C9440799%2C9440927%2C9441191%2C9441459%2C9441768%2C9442424%2C9442426%2C9443259%2C9443739%2C9444229%2C9445058%2C9445143&mt=1471965857&mv=m&ms=au&source=youtube&mime=video%2Fmp4&mm=31&mn=sn-q4f7snsk&signature=3F539D9752815F5918F44FD9A29802E376407F94.79DFCD6F72A0D941B3EA2CB728CB979305F03BDB&title=Emon+Jodi+Hoto+%28%E0%A6%8F%E0%A6%AE%E0%A6%A8+%E0%A6%AF%E0%A6%A6%E0%A6%BF+%E0%A6%B9%E0%A6%A4%E0%A7%8B%29+by+Joler+Gaan");
         if (1 + 1 == 2) {
             return;
         }
@@ -363,6 +373,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void HELP(ActionEvent event) {
+    }
+
+    @FXML
+    private void all_load_clicked(ActionEvent event) {
     }
 
 }

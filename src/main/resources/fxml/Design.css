@@ -69,10 +69,44 @@
 }
 
 .stop-button{
+    -fx-background-image: url("stop.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
     -fx-background-radius: 10;
-    -fx-background-color: #ff3333;
+    -fx-background-size: 30 30;
     -fx-border-color: #000000;
-    -fx-border-width: 2;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+.stop-button:hover{
+    -fx-background-image: url("stop.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-radius: 10;
+    -fx-background-size: 30 30;
+    -fx-border-color: #000000;
+    -fx-border-width: 0;
+    -fx-border-radius: 10;
+}
+
+.restart-button{
+    -fx-background-image: url("restart.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    -fx-background-radius: 10;
+    -fx-background-size: 30 30;
+    -fx-border-color: #000000;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+.restart-button:hover{
+    -fx-background-image: url("restart.png");
+    -fx-background-position: center center;
+-fx-background-repeat: stretch;
+    -fx-background-radius: 10;
+    -fx-background-size: 30 30;
+    -fx-border-color: #000000;
+    -fx-border-width: 0;
     -fx-border-radius: 10;
 }
 .HeadLine{
@@ -123,4 +157,10 @@
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-font-size: 20px;
     -fx-padding: 10 20 10 20;
+}
+.vbox{
+   -fx-background-color:  #b3e6ff;
+}
+.random-button{
+    -fx-background-radius: 10;
 }
