@@ -46,12 +46,12 @@ public class PopupController implements Initializable {
     private Label webm;
     @FXML
     private Label g3;
-
+    
     @Override
     @SuppressWarnings("empty-statement")
     public void initialize(URL location, ResourceBundle resources) {
 
-        choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "MP3");
+        choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "M4A");
         ///                     MAKE REQUEST TO www.keepvid.com TO GIVE DIRECT LINK OF VIDEOS
         double m1 = 0, m2 = 0, g1 = 0, w = 0;
         try {

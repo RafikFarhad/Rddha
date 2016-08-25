@@ -5,34 +5,34 @@
  */
 package farhad.rddha.Controller;
 
-
-import javafx.fxml.Initializable;
+import farhad.rddha.MainApp;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.Image;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-public class searchtabcontroller implements Initializable {
+/**
+ *
+ * @author rafikfarhad
+ */
+public class PopupWaitController implements Initializable {
 
-    public static Label lbl1;
-    @FXML public static Button btn1;
-    @FXML
-    private AnchorPane Search_Grid;
-    @FXML
-    private TextField Search_Input;
-    
-     @Override
+    @Override
+
     public void initialize(URL location, ResourceBundle resources) {
 
-    }
-    
-    @FXML private void bt1_pressed(ActionEvent event){
-        System.out.println("tab 1!!!!!!!");
-        
     }
 
 }

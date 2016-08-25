@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="163.0" prefWidth="398.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff; -fx-border-width: 5;" stylesheets="@popup.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="farhad.rddha.Controller.PopupWaitController">
+   <children>
+      <ProgressIndicator layoutX="135.0" layoutY="24.0" prefHeight="112.0" prefWidth="107.0" />
+   </children>
+</AnchorPane>

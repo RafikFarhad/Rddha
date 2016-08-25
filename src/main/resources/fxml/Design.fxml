@@ -39,7 +39,6 @@
                               <Button fx:id="video_link_btn" layoutX="584.0" layoutY="55.0" mnemonicParsing="false" onAction="#video_link_button_pressed" prefHeight="26.0" prefWidth="163.0" styleClass="random-button" text="Get from video link" />
                               <Label layoutX="130.0" layoutY="7.0" text="Youtube Playlist Link:" />
                               <Label layoutX="580.0" layoutY="7.0" text="Youtube Video Link:" />
-                              <ProgressIndicator fx:id="drama" layoutX="421.0" layoutY="16.0" progress="0.0" />
                               <Button fx:id="all_load" layoutX="319.0" layoutY="68.0" mnemonicParsing="false" onAction="#all_load_clicked" prefHeight="37.0" prefWidth="110.0" styleClass="random-button" text="Download All" />
                               <ChoiceBox fx:id="all_choice" layoutX="436.0" layoutY="67.0" prefHeight="38.0" prefWidth="118.0" style="-fx-background-radius: 10;" />
                            </children>
@@ -48,20 +47,20 @@
                           <content>
                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="800.0" style="-fx-background-color: white;">
                                  <children>
-                                    <VBox fx:id="vbox0" minHeight="100.0" prefHeight="340.0" prefWidth="50.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox0" prefWidth="50.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox fx:id="vbox1" layoutX="50.0" maxHeight="1.7976931348623157E308" minHeight="100.0" prefHeight="340.0" prefWidth="200.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox1" layoutX="50.0" maxHeight="1.7976931348623157E308" prefWidth="200.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox2" layoutX="250.0" maxHeight="1.7976931348623157E308" minHeight="100.0" prefHeight="340.0" prefWidth="400.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox2" layoutX="250.0" maxHeight="1.7976931348623157E308" prefWidth="400.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>
-                                    <VBox fx:id="vbox3" layoutX="650.0" maxHeight="1.7976931348623157E308" minHeight="100.0" prefHeight="340.0" prefWidth="150.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="vbox3" layoutX="650.0" maxHeight="1.7976931348623157E308" prefWidth="150.0" spacing="10.0" styleClass="vbox" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></VBox>

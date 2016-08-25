@@ -1,5 +1,6 @@
 package farhad.rddha.Controller;
 
+import farhad.rddha.CallingWait;
 import farhad.rddha.DATA;
 import farhad.rddha.MainApp;
 import farhad.rddha.Searching_Thread;
@@ -13,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -25,7 +27,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -36,7 +37,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class MainController implements Initializable {
 
@@ -87,8 +87,6 @@ public class MainController implements Initializable {
     @FXML
     private Menu help;
     @FXML
-    private ProgressIndicator drama;
-    @FXML
     private Button all_load;
     @FXML
     private ChoiceBox<String> all_choice;
@@ -99,45 +97,44 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         destination.setText(System.getProperty("user.home") + "/Desktop/");
-        drama.setVisible(false);
         all_load.setDisable(true);
         all_choice.getItems().addAll("MP4 480pixel", "WEBM 360pixel", "M4A");
     }
 
     private void CLEARR_ALL() {
-
+        vbox0.getChildren().clear();
         vbox1.getChildren().clear();
         vbox2.getChildren().clear();
         vbox3.getChildren().clear();
     }
 
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
-        
+
         vbox0.getChildren().clear();
         vbox1.getChildren().clear();
         vbox2.getChildren().clear();
         vbox3.getChildren().clear();
         for (int i = 0; i < tot; i++) {
+            System.out.println(i + " -> " + tot);
 
             /// Buttons for Download 
             Download_Button_Array[i] = new Button("Download");
             Download_Button_Array[i].setMinHeight(200);
-            Download_Button_Array[i].setMinWidth(140);
+            Download_Button_Array[i].setMinWidth(130);
             Download_Button_Array[i].getStyleClass().add("download");
-            
+
             Download_Button_Array[i].setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent event) {
                     for (int j = 0; j < tot; j++) {
                         if (event.getSource() == Download_Button_Array[j]) {
-
                             try {
                                 //System.out.println("Link " + j + " is clicked\n So " + j + "number video should be download");
                                 //Download_ADD_FUNCTION(j);
                                 SHOW_POP_UP(j);
                             } catch (IOException ex) {
-                                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                                ;
                             }
                             break;
 
@@ -151,12 +148,12 @@ public class MainController implements Initializable {
             Result_Title[i].setMinWidth(390);
             Result_Title[i].setWrapText(true);
             Result_Title[i].getStyleClass().add("result");
-            No_Title[i] = new Label(String.valueOf(i+1));
+            No_Title[i] = new Label(String.valueOf(i + 1));
             No_Title[i].setMinHeight(200);
             No_Title[i].setMinWidth(40);
             No_Title[i].setWrapText(true);
-            No_Title[i].getStyleClass().add("result");
-            
+            No_Title[i].getStyleClass().add("no");
+
             ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
@@ -177,7 +174,6 @@ public class MainController implements Initializable {
         MainApp.current_title = MainApp.Result[video_no];
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
-        //choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         Stage popup = new Stage();
         Scene scene = new Scene(root);
         popup.setTitle("Select Format");
@@ -282,63 +278,162 @@ public class MainController implements Initializable {
         MainApp.dest_location = st;
         destination.setText(st);
     }
+    static int error;
 
     @FXML
     public void bt1_pressed(ActionEvent event) throws IOException, InterruptedException {
         CLEARR_ALL();
-        drama.setVisible(true);
-        Searching_Thread t = new Searching_Thread(1, Search_Input.getText());
-        t.start();
-        t.join();
-        if (t.error == 1) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning Dialog");
-            alert.setHeaderText("Error in parsing data with youtube");
-            alert.setContentText("Possible Cause:\n"
+        all_load.setDisable(true);
+        error = 0;
+        final Alert alert = new Alert(Alert.AlertType.INFORMATION);;
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/fxml/popupWait.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(CallingWait.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        alert.setTitle("Wait for a moment");
+        alert.setHeaderText("Working in progress");
+        alert.getDialogPane().contentProperty().set(root);
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                Searching_Thread t = new Searching_Thread(1, Search_Input.getText());
+                if (t.error == 1) {
+                    cancel();
+                } else {
+                    done();
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                try {
+                    all_load.setDisable(false);
+                    Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+                } catch (IOException ex) {
+                    ;
+                }
+                alert.hide();
+            }
+        });
+        task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                alert.hide();
+                error = 1;
+            }
+        });
+
+        new Thread(task).start();
+
+        alert.showAndWait();
+        if (error == 1) {
+            all_load.setDisable(true);
+            Alert myalert = new Alert(Alert.AlertType.WARNING);
+            myalert.setTitle("Warning Dialog");
+            myalert.setHeaderText("Error in parsing data with youtube");
+            myalert.setContentText("Possible Cause:\n"
                     + "-> Please check your playlist link, it may either be broken"
                     + " or this playlist is not public\n"
                     + "-> Check your internet connection.");
-            //alert.contentTextProperty().
-            alert.getDialogPane().setPrefSize(500, 250);
-            alert.getDialogPane().getScene().getWindow().sizeToScene();
-            alert.showAndWait();
-            return;
+            myalert.getDialogPane().getScene().getWindow().sizeToScene();
+            myalert.showAndWait();
         }
 
-        drama.setProgress(1.0);
-        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
-
+        //Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
     }
 
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException, InterruptedException {
-        MainApp.current_title = "FARHAD";
-        TESTINGG("mp4", "http://r18---sn-q4f7snsk.googlevideo.com/videoplayback?itag=18&ipbits=0&key=yt6&pl=24&dur=267.609&sver=3&expire=1471987991&nh=IgpwcjA1LmRmdzA2Kgs1MC45Ny4xNi4zNg&ratebypass=yes&initcwndbps=2868750&ei=tmy8V4bmOMPtcPSynfAP&id=o-AMu0Wow_DdM88G3dbZUxqfVFV5oAUFEgKj5qQ8BPW2z-&upn=vVgXByqkkUg&lmt=1457939870484316&ip=159.253.144.86&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9419451%2C9422596%2C9426731%2C9427833%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433221%2C9433946%2C9435526%2C9438227%2C9438327%2C9438662%2C9438731%2C9439580%2C9439882%2C9440431%2C9440799%2C9440927%2C9441191%2C9441459%2C9441768%2C9442424%2C9442426%2C9443259%2C9443739%2C9444229%2C9445058%2C9445143&mt=1471965857&mv=m&ms=au&source=youtube&mime=video%2Fmp4&mm=31&mn=sn-q4f7snsk&signature=3F539D9752815F5918F44FD9A29802E376407F94.79DFCD6F72A0D941B3EA2CB728CB979305F03BDB&title=Emon+Jodi+Hoto+%28%E0%A6%8F%E0%A6%AE%E0%A6%A8+%E0%A6%AF%E0%A6%A6%E0%A6%BF+%E0%A6%B9%E0%A6%A4%E0%A7%8B%29+by+Joler+Gaan");
-        if (1 + 1 == 2) {
-            return;
-        }
+//        MainApp.current_title = "FARHAD";
+//        TESTINGG("mp4", "http://r18---sn-q4f7snsk.googlevideo.com/videoplayback?itag=18&ipbits=0&key=yt6&pl=24&dur=267.609&sver=3&expire=1471987991&nh=IgpwcjA1LmRmdzA2Kgs1MC45Ny4xNi4zNg&ratebypass=yes&initcwndbps=2868750&ei=tmy8V4bmOMPtcPSynfAP&id=o-AMu0Wow_DdM88G3dbZUxqfVFV5oAUFEgKj5qQ8BPW2z-&upn=vVgXByqkkUg&lmt=1457939870484316&ip=159.253.144.86&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9419451%2C9422596%2C9426731%2C9427833%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433221%2C9433946%2C9435526%2C9438227%2C9438327%2C9438662%2C9438731%2C9439580%2C9439882%2C9440431%2C9440799%2C9440927%2C9441191%2C9441459%2C9441768%2C9442424%2C9442426%2C9443259%2C9443739%2C9444229%2C9445058%2C9445143&mt=1471965857&mv=m&ms=au&source=youtube&mime=video%2Fmp4&mm=31&mn=sn-q4f7snsk&signature=3F539D9752815F5918F44FD9A29802E376407F94.79DFCD6F72A0D941B3EA2CB728CB979305F03BDB&title=Emon+Jodi+Hoto+%28%E0%A6%8F%E0%A6%AE%E0%A6%A8+%E0%A6%AF%E0%A6%A6%E0%A6%BF+%E0%A6%B9%E0%A6%A4%E0%A7%8B%29+by+Joler+Gaan");
+//        if (1 + 1 == 2) {
+//            return;
+//        }
         CLEARR_ALL();
-        drama.setVisible(true);
-        Searching_Thread t = new Searching_Thread(2, Search_Input_video_link.getText());
-        t.start();
-        t.join();
-        if (t.error == 1) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning Dialog");
+        error = 0;
+        final Alert alert = new Alert(Alert.AlertType.INFORMATION);;
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/fxml/popupWait.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(CallingWait.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        alert.setTitle("Wait for a moment");
+        alert.setHeaderText("Working in progress");
+        alert.getDialogPane().contentProperty().set(root);
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                Searching_Thread t = new Searching_Thread(2, Search_Input.getText());
+                if (t.error == 1) {
+                    cancel();
+                } else {
+                    done();
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                try {
+                    Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+                } catch (IOException ex) {
+                    ;
+                }
+                alert.hide();
+            }
+        });
+        task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                alert.hide();
+                error = 1;
+            }
+        });
+
+        new Thread(task).start();
+
+        alert.showAndWait();
+        if (error == 1) {
+            all_load.setDisable(true);
+            Alert myalert = new Alert(Alert.AlertType.WARNING);
+            myalert.setTitle("Warning Dialog");
             alert.setHeaderText("Error in parsing data with youtube");
             alert.setContentText("Possible Cause:\n"
                     + "-> Please check your video link, it may either be broken"
                     + " or this video is not public\n"
                     + "-> Check your internet connection.");
-            //alert.contentTextProperty().
-            alert.getDialogPane().setPrefSize(500, 250);
-            alert.getDialogPane().getScene().getWindow().sizeToScene();
-            alert.showAndWait();
-            return;
+            myalert.getDialogPane().getScene().getWindow().sizeToScene();
+            myalert.showAndWait();
         }
-
-        drama.setProgress(1.0);
-        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+//        CLEARR_ALL();
+//        drama.setVisible(true);
+//        Searching_Thread t = new Searching_Thread(2, Search_Input_video_link.getText());
+//
+//        if (t.error == 1) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Warning Dialog");
+//            alert.setHeaderText("Error in parsing data with youtube");
+//            alert.setContentText("Possible Cause:\n"
+//                    + "-> Please check your video link, it may either be broken"
+//                    + " or this video is not public\n"
+//                    + "-> Check your internet connection.");
+//            //alert.contentTextProperty().
+//            alert.getDialogPane().setPrefSize(500, 250);
+//            alert.getDialogPane().getScene().getWindow().sizeToScene();
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        drama.setProgress(1.0);
+//        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
 
     }
 
@@ -377,6 +472,9 @@ public class MainController implements Initializable {
 
     @FXML
     private void all_load_clicked(ActionEvent event) {
+        if(MainApp.total_item<=1)
+            return;
+        System.out.println("all download  + " + MainApp.total_item);
     }
 
 }

@@ -112,6 +112,17 @@
 .HeadLine{
     -fx-background-color:  #ff99dd;
 }
+.no{
+    -fx-background-color: #61e89b;
+    -fx-background-radius: 5;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5;
+    -fx-alignment: CENTER;
+    -fx-font-family: Arial;
+    -fx-color: #ffffff;
+    -fx-font-size: 10px;
+    -fx-padding: 10px 20px 10px 20px;
+}
 .result{
     -fx-background-color: #61e89b;
     -fx-background-radius: 5;

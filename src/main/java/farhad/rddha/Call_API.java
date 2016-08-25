@@ -66,7 +66,7 @@ public class Call_API {
 
         JSONObject main_obj2 = new JSONObject(jsonData2);
 
-        //System.out.println("blogURL: " + pageInfo.getString("totalResults"));
+        
         total_item = 0;
 
         JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
@@ -87,6 +87,7 @@ public class Call_API {
             //System.out.println(Thumbnail_Link[i]);
 
         }
+        //System.out.println("DONE!!!!!!!!!!!!!!!!!!!!");
     }
 
     public void GET_ALL_DATA_FROM_VIDEO(String query) throws IOException {
