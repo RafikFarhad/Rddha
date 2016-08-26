@@ -113,7 +113,44 @@
             </Tab>
             <Tab fx:id="tab4" text="About">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #000000;">
+                     <children>
+                        <Label layoutX="217.0" layoutY="52.0" text="Md Rafikul Islam Farhad" textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="250.0" layoutY="124.0" text="Dept of CSE, SUST." textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="179.0" layoutY="162.0" text="Email: rafikfarhad@gmail.com." textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="239.0" layoutY="280.0" text="Under SuperVision of:" textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="244.0" layoutY="323.0" text="Md. Eamin Rahman," textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="136.0" layoutY="361.0" text="Assistant Professor, Dept. of CSE, SUST." textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="257.0" layoutY="89.0" text="Reg: 2013331032" textAlignment="CENTER" textFill="#f5f2f2">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
