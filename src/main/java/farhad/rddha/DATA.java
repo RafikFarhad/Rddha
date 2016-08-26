@@ -197,7 +197,7 @@ public class DATA extends Observable implements Runnable {
     private void stateChanged() {
 //        setChanged();
 //        notifyObservers();
-        System.out.println("stateChanged() -> " + downloaded  + " -> " + size);
+        //System.out.println("stateChanged() -> " + downloaded  + " -> " + size);
     }
 
 //    // Max size of download buffer.

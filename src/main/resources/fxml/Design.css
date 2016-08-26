@@ -110,7 +110,7 @@
     -fx-border-radius: 10;
 }
 .HeadLine{
-    -fx-background-color:  #ff99dd;
+    /*-fx-background-color:  #ff99dd;*/
 }
 .no{
     -fx-background-color: #61e89b;
@@ -121,7 +121,6 @@
     -fx-font-family: Arial;
     -fx-color: #ffffff;
     -fx-font-size: 10px;
-    -fx-padding: 10px 20px 10px 20px;
 }
 .result{
     -fx-background-color: #61e89b;
@@ -131,11 +130,11 @@
     -fx-alignment: CENTER;
     -fx-font-family: Arial;
     -fx-color: #ffffff;
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
     -fx-padding: 10px 20px 10px 20px;
 }
 .result:hover{
-    -fx-font-size: 25px;
+    -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
 }
 

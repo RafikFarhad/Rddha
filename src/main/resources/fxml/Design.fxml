@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -28,11 +27,11 @@
                         <AnchorPane fx:id="SearchTabBackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="110.0" prefWidth="800.0" style="-fx-background-color: #b3ffb3;">
                            <children>
                               <Button fx:id="btn1" layoutX="120.0" layoutY="55.0" mnemonicParsing="false" onAction="#bt1_pressed" prefHeight="26.0" prefWidth="163.0" styleClass="random-button" text="Get from playlist" />
-                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="24.0" prefHeight="26.0" prefWidth="365.0" promptText="Search on youtube!" style="-fx-background-radius: 10;" text="https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBsvRxJJOzG4r4k_zLKrnxl">
+                              <TextField fx:id="Search_Input" layoutX="20.0" layoutY="24.0" prefHeight="26.0" prefWidth="365.0" promptText="Search on youtube!" style="-fx-background-radius: 10;" text="https://www.youtube.com/watch?v=4ZAEBxGipoA&amp;list=PL6gx4Cwl9DGBhLZx_5C-jqECBE4HIID_k">
                                  <font>
                                     <Font size="11.0" />
                                  </font></TextField>
-                              <TextField fx:id="Search_Input_video_link" layoutX="499.0" layoutY="24.0" prefHeight="26.0" prefWidth="291.0" promptText="www.youtube.com/**************" style="-fx-background-radius: 10;">
+                              <TextField fx:id="Search_Input_video_link" layoutX="499.0" layoutY="24.0" prefHeight="26.0" prefWidth="291.0" promptText="www.youtube.com/**************" style="-fx-background-radius: 10;" text="https://www.youtube.com/watch?v=hb4j3czMEds">
                                  <font>
                                     <Font size="11.0" />
                                  </font></TextField>

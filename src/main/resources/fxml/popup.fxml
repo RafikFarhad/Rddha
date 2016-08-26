@@ -16,7 +16,7 @@
       <Label fx:id="webm" layoutX="115.0" layoutY="85.0" prefHeight="28.0" prefWidth="112.0" style="-fx-text-fill: #ffffff; -fx-font-weight: bold;" text="3MB" />
       <Label fx:id="g3" layoutX="115.0" layoutY="125.0" prefHeight="28.0" prefWidth="112.0" style="-fx-text-fill: #ffffff; -fx-font-weight: bold;" text="512KB" />
       <ChoiceBox fx:id="choice" layoutX="205.0" layoutY="35.0" prefHeight="26.0" prefWidth="167.0" />
-      <Button id="dark-blue" fx:id="cancel_button" layoutX="191.0" layoutY="101.0" mnemonicParsing="false" onAction="#CANCEL_BUTTON_PRESSED" prefHeight="42.0" prefWidth="88.0" text="Cancel" />
-      <Button id="dark-blue" fx:id="ok_button" layoutX="298.0" layoutY="101.0" mnemonicParsing="false" onAction="#OK_BUTTON_PRESSED" prefHeight="42.0" prefWidth="88.0" stylesheets="@popup.css" text="OK" />
+      <Button id="dark-blue" fx:id="cancel_button" layoutX="289.0" layoutY="102.0" mnemonicParsing="false" onAction="#CANCEL_BUTTON_PRESSED" prefHeight="42.0" prefWidth="88.0" text="Cancel" />
+      <Button id="dark-blue" fx:id="ok_button" layoutX="189.0" layoutY="102.0" mnemonicParsing="false" onAction="#OK_BUTTON_PRESSED" prefHeight="42.0" prefWidth="88.0" stylesheets="@popup.css" text="OK" />
    </children>
 </AnchorPane>

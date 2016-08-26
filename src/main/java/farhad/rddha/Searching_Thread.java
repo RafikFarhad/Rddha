@@ -17,7 +17,7 @@ import javafx.scene.control.Alert;
  *
  * @author rafikfarhad
  */
-public class Searching_Thread{
+public class Searching_Thread {
 
     Call_API a;
     public int error, type;
@@ -29,20 +29,20 @@ public class Searching_Thread{
         error = 0;
         this.type = type;
         this.link = link;
-        run();        
+        run();
     }
 
     public void run() {
         try {
             if (type == 1) {
                 a.GET_ALL_DATA_FROM_PLAYLIST(link);
-                } else {
+            } else {
                 a.GET_ALL_DATA_FROM_VIDEO(link);
             }
         } catch (Exception e) {
             error = 1;
         } finally {
-            
+
         }
     }
 

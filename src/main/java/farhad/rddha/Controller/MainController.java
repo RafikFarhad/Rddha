@@ -1,7 +1,7 @@
 package farhad.rddha.Controller;
 
-import farhad.rddha.CallingWait;
 import farhad.rddha.DATA;
+import farhad.rddha.Find_ALL;
 import farhad.rddha.MainApp;
 import farhad.rddha.Searching_Thread;
 import java.io.File;
@@ -11,8 +11,6 @@ import java.net.MalformedURLException;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -41,6 +39,7 @@ import javafx.stage.Stage;
 public class MainController implements Initializable {
 
     /// Personally Declared Variable
+    public static int loaded;
     public Button[] Play_Button_Array;// = new Button[55];
     public Button[] Download_Button_Array = new Button[55];
     public Label[] Result_Title = new Label[50];
@@ -48,6 +47,7 @@ public class MainController implements Initializable {
     public ImageView[] Thumbnail_Image = new ImageView[55];
     public String inputQuery;
     public int Now_Playing = 0;
+    static public String all_load_format = null, pree[];
     @FXML
     public TabPane MyTab;
     @FXML
@@ -98,7 +98,7 @@ public class MainController implements Initializable {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         destination.setText(System.getProperty("user.home") + "/Desktop/");
         all_load.setDisable(true);
-        all_choice.getItems().addAll("MP4 480pixel", "WEBM 360pixel", "M4A");
+        all_choice.getItems().addAll("MP4 480pixel", "WEBM 360pixel", "MP3");
     }
 
     private void CLEARR_ALL() {
@@ -119,7 +119,7 @@ public class MainController implements Initializable {
 
             /// Buttons for Download 
             Download_Button_Array[i] = new Button("Download");
-            Download_Button_Array[i].setMinHeight(200);
+            Download_Button_Array[i].setMinHeight(100);
             Download_Button_Array[i].setMinWidth(130);
             Download_Button_Array[i].getStyleClass().add("download");
 
@@ -129,13 +129,9 @@ public class MainController implements Initializable {
                 public void handle(ActionEvent event) {
                     for (int j = 0; j < tot; j++) {
                         if (event.getSource() == Download_Button_Array[j]) {
-                            try {
-                                //System.out.println("Link " + j + " is clicked\n So " + j + "number video should be download");
-                                //Download_ADD_FUNCTION(j);
-                                SHOW_POP_UP(j);
-                            } catch (IOException ex) {
-                                ;
-                            }
+
+                            SHOW_POP_UP(j);
+
                             break;
 
                         }
@@ -144,12 +140,12 @@ public class MainController implements Initializable {
             });
             /// For Showing Title 
             Result_Title[i] = new Label(Title[i]);
-            Result_Title[i].setMinHeight(200);
+            Result_Title[i].setMinHeight(100);
             Result_Title[i].setMinWidth(390);
             Result_Title[i].setWrapText(true);
             Result_Title[i].getStyleClass().add("result");
             No_Title[i] = new Label(String.valueOf(i + 1));
-            No_Title[i].setMinHeight(200);
+            No_Title[i].setMinHeight(100);
             No_Title[i].setMinWidth(40);
             No_Title[i].setWrapText(true);
             No_Title[i].getStyleClass().add("no");
@@ -158,7 +154,7 @@ public class MainController implements Initializable {
             Thumbnail_Image[i] = new ImageView();
             //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             Thumbnail_Image[i].setImage(new Image(Thumbnail_Link[i]));
-            Thumbnail_Image[i].setFitHeight(200);
+            Thumbnail_Image[i].setFitHeight(100);
             Thumbnail_Image[i].setFitWidth(190);
             vbox1.getChildren().addAll(Thumbnail_Image[i]);
             vbox0.getChildren().addAll(No_Title[i]);
@@ -168,12 +164,18 @@ public class MainController implements Initializable {
         }
     }
 
-    void SHOW_POP_UP(int video_no) throws IOException {
+    void SHOW_POP_UP(int video_no) {
 
         MainApp.current = MainApp.Video_Link[video_no];
         MainApp.current_title = MainApp.Result[video_no];
+        //System.out.println("video_no " + video_no + " " + MainApp.current_title);
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/fxml/popup.fxml"));
+        } catch (IOException ex) {
+            ; // Default Directory, never IOException occurs;
+        }
         Stage popup = new Stage();
         Scene scene = new Scene(root);
         popup.setTitle("Select Format");
@@ -190,21 +192,15 @@ public class MainController implements Initializable {
         Thread t = new Thread(a);
         t.setDaemon(true);
         t.start();
-        //System.out.println("Download Thread started :D +++++++++++++++++++++++++");
-        int LengthofTitle = MainApp.current_title.length();
-        if (LengthofTitle > 20) {
-            LengthofTitle = 20;
-        }
         final String Short_Title = MainApp.current_title;
-        a.HeadLine.setText("Downloading -- " + Short_Title + "." + format);
+        a.HeadLine.setText(Short_Title + "." + format);
         progressbar_vbox.getChildren().addAll(a.bar, a.HeadLine);
         play_vbox.getChildren().addAll(a.restart);
         stop_vbox.getChildren().addAll(a.stop);
-
         if (MainApp.dest_location == null) {
             CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
         }
-
+        System.out.println("Reached at mid");
         Task task2 = null;
         task2 = new Task<Void>() {
             @Override
@@ -218,18 +214,14 @@ public class MainController implements Initializable {
                         d = 0l;
                     }
                     s = a.size;
-                    //System.out.println("d = " + d + " s = " + s);
                     updateProgress(d, s);
-                    sleep(500);
-                    //if (s != -1 && d >= s) {
-                    if (a.status == 2) {
-                        a.restart.setDisable(true);
+                    sleep(100);
+                    if (d==s) {
                         System.out.println("Completed Download");
                         done();
-                        super.cancel();
                         break;
                     } else if (a.getStatus() == 3) {
-                        super.cancel();
+                        cancel();
                         break;
                     }
                     if (isDone()) {
@@ -241,6 +233,12 @@ public class MainController implements Initializable {
             }
 
         };
+        task2.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                a.restart.setDisable(true);
+            }
+        });
         a.bar.progressProperty().bind(task2.progressProperty());
 
         a.stop.setOnAction(new EventHandler() {
@@ -262,6 +260,7 @@ public class MainController implements Initializable {
         });
         Thread thread2 = new Thread(task2);
         thread2.start();
+        System.out.println("Reached at end");
         MyTab.getSelectionModel().select(1);
     }
 
@@ -290,7 +289,7 @@ public class MainController implements Initializable {
         try {
             root = FXMLLoader.load(getClass().getResource("/fxml/popupWait.fxml"));
         } catch (IOException ex) {
-            Logger.getLogger(CallingWait.class.getName()).log(Level.SEVERE, null, ex);
+            ;
         }
         alert.setTitle("Wait for a moment");
         alert.setHeaderText("Working in progress");
@@ -323,8 +322,8 @@ public class MainController implements Initializable {
         task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                alert.hide();
                 error = 1;
+                alert.hide();
             }
         });
 
@@ -335,7 +334,7 @@ public class MainController implements Initializable {
             all_load.setDisable(true);
             Alert myalert = new Alert(Alert.AlertType.WARNING);
             myalert.setTitle("Warning Dialog");
-            myalert.setHeaderText("Error in parsing data with youtube");
+            myalert.setHeaderText("Error in parsing data from youtube");
             myalert.setContentText("Possible Cause:\n"
                     + "-> Please check your playlist link, it may either be broken"
                     + " or this playlist is not public\n"
@@ -354,86 +353,26 @@ public class MainController implements Initializable {
 //        if (1 + 1 == 2) {
 //            return;
 //        }
+
         CLEARR_ALL();
-        error = 0;
-        final Alert alert = new Alert(Alert.AlertType.INFORMATION);;
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/fxml/popupWait.fxml"));
-        } catch (IOException ex) {
-            Logger.getLogger(CallingWait.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        alert.setTitle("Wait for a moment");
-        alert.setHeaderText("Working in progress");
-        alert.getDialogPane().contentProperty().set(root);
 
-        Task<Void> task = new Task<Void>() {
-            @Override
-            public Void call() throws Exception {
-                Searching_Thread t = new Searching_Thread(2, Search_Input.getText());
-                if (t.error == 1) {
-                    cancel();
-                } else {
-                    done();
-                }
-                return null;
-            }
-        };
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                try {
-                    Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
-                } catch (IOException ex) {
-                    ;
-                }
-                alert.hide();
-            }
-        });
-        task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                alert.hide();
-                error = 1;
-            }
-        });
+        Searching_Thread t = new Searching_Thread(2, Search_Input_video_link.getText());
 
-        new Thread(task).start();
-
-        alert.showAndWait();
-        if (error == 1) {
-            all_load.setDisable(true);
-            Alert myalert = new Alert(Alert.AlertType.WARNING);
-            myalert.setTitle("Warning Dialog");
-            alert.setHeaderText("Error in parsing data with youtube");
-            alert.setContentText("Possible Cause:\n"
+        if (t.error == 1) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setTitle("Warning Dialog");
+            alert1.setHeaderText("Error in parsing data from youtube");
+            alert1.setContentText("Possible Cause:\n"
                     + "-> Please check your video link, it may either be broken"
                     + " or this video is not public\n"
                     + "-> Check your internet connection.");
-            myalert.getDialogPane().getScene().getWindow().sizeToScene();
-            myalert.showAndWait();
+            //alert.contentTextProperty().
+            alert1.getDialogPane().setPrefSize(500, 250);
+            alert1.getDialogPane().getScene().getWindow().sizeToScene();
+            alert1.showAndWait();
+            return;
         }
-//        CLEARR_ALL();
-//        drama.setVisible(true);
-//        Searching_Thread t = new Searching_Thread(2, Search_Input_video_link.getText());
-//
-//        if (t.error == 1) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Warning Dialog");
-//            alert.setHeaderText("Error in parsing data with youtube");
-//            alert.setContentText("Possible Cause:\n"
-//                    + "-> Please check your video link, it may either be broken"
-//                    + " or this video is not public\n"
-//                    + "-> Check your internet connection.");
-//            //alert.contentTextProperty().
-//            alert.getDialogPane().setPrefSize(500, 250);
-//            alert.getDialogPane().getScene().getWindow().sizeToScene();
-//            alert.showAndWait();
-//            return;
-//        }
-//
-//        drama.setProgress(1.0);
-//        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
+        Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
 
     }
 
@@ -471,10 +410,62 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void all_load_clicked(ActionEvent event) {
-        if(MainApp.total_item<=1)
+    private void all_load_clicked(ActionEvent event) throws IOException {
+        if (MainApp.total_item <= 1 || all_choice.getValue() == null) {
             return;
+        }
+        all_load_format = all_choice.getValue();
+
         System.out.println("all download  + " + MainApp.total_item);
+        final Alert alert = new Alert(Alert.AlertType.INFORMATION);;
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/fxml/DummyLoading.fxml"));
+
+        } catch (IOException ex) {
+            ;
+        }
+        alert.setTitle("Wait for a moment");
+        alert.setHeaderText("Working in progress");
+        alert.getDialogPane().contentProperty().set(root);
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                Find_ALL in = new Find_ALL();
+                return null;
+            }
+        };
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                alert.hide();
+            }
+        });
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+        alert.showAndWait();
+
+        int mark = 0;
+
+        for (int i = 0; i < pree.length && mark == 0; i++) {
+            System.out.println(i + " -> " + pree[i]);
+            if (mark == 0 && pree[i] == null) {
+                mark = 1;
+                Alert myalert = new Alert(Alert.AlertType.WARNING);
+                myalert.setTitle("Warning Dialog");
+                myalert.setHeaderText("Error in parsing data from third party site");
+                myalert.setContentText("Possible Cause:\n"
+                        + "-> Some videos may be not available in " + all_load_format
+                        + "-> Third Party site is unvailable.");
+                myalert.getDialogPane().getScene().getWindow().sizeToScene();
+                myalert.showAndWait();
+            } else {
+                MainApp.current_title = MainApp.Result[i];
+                TESTINGG(all_load_format, pree[i]);
+            }
+        }
     }
 
 }
