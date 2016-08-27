@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package farhad.rddha;
 
 import static farhad.rddha.MainApp.Result;
@@ -20,17 +15,25 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
+ * This class deal with youtube for grabbing data like direct link, short title,
+ * thumbnail image link....
  *
  * @author rafikfarhad
  */
 public class Call_API {
-    
+
+    /**
+     *
+     * @param query a link of youtube play list;
+     * @throws Exception If there is any Exception in parsing data from
+     * www.youtube.com
+     */
     public void GET_ALL_DATA_FROM_PLAYLIST(String query) throws Exception {
 
         query = "=" + query;
         query = query.substring(query.lastIndexOf('=') + 1);
         //System.out.println("QUERY: " + query);
- 
+
         String jsonData = "";
         String jsonData2 = "";
 
@@ -61,12 +64,11 @@ public class Call_API {
             }
             in.close();
         }
-        
+
         JSONObject main_obj = new JSONObject(jsonData);
 
         JSONObject main_obj2 = new JSONObject(jsonData2);
 
-        
         total_item = 0;
 
         JSONObject pageInfo = main_obj.getJSONObject("pageInfo");
@@ -90,7 +92,13 @@ public class Call_API {
         //System.out.println("DONE!!!!!!!!!!!!!!!!!!!!");
     }
 
-    public void GET_ALL_DATA_FROM_VIDEO(String query) throws IOException {
+    /**
+     *
+     * @param query a link of youtube video;
+     * @throws Exception If there is any Exception in parsing data from
+     * www.youtube.com
+     */
+    public void GET_ALL_DATA_FROM_VIDEO(String query) throws Exception {
 
         query = "=" + query;
         query = query.substring(query.lastIndexOf('=') + 1);
@@ -133,5 +141,5 @@ public class Call_API {
         total_item = 1;
 
     }
-    
+
 }

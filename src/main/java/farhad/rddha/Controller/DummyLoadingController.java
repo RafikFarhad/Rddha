@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package farhad.rddha.Controller;
 
 import static farhad.rddha.Controller.MainController.error;
@@ -38,11 +33,11 @@ public class DummyLoadingController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * This is a simple GUI appear when there is some background work occurs.
+     * @param url
+     * @param rb
      */
     public void initialize(URL url, ResourceBundle rb) {
             pin.setProgress(-1);
     }
-
-    
-
 }

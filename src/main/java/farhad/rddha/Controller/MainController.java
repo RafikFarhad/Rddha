@@ -36,11 +36,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+/**
+ * The most important class. This class handle some major methods and work flows
+ * of this application.
+ *
+ * @author rafikfarhad
+ */
 public class MainController implements Initializable {
 
     /// Personally Declared Variable
     public static int loaded;
-    public Button[] Play_Button_Array;// = new Button[55];
+    public Button[] Play_Button_Array;
     public Button[] Download_Button_Array = new Button[55];
     public Label[] Result_Title = new Label[50];
     public Label[] No_Title = new Label[50];
@@ -48,6 +54,7 @@ public class MainController implements Initializable {
     public String inputQuery;
     public int Now_Playing = 0;
     static public String all_load_format = null, pree[];
+    ///Declaration from FXML
     @FXML
     public TabPane MyTab;
     @FXML
@@ -93,14 +100,24 @@ public class MainController implements Initializable {
     @FXML
     private VBox vbox0;
 
+    /**
+     * initilize the controller
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "3GP 244pixel");
         destination.setText(System.getProperty("user.home") + "/Desktop/");
         all_load.setDisable(true);
+        all_choice.setDisable(true);
         all_choice.getItems().addAll("MP4 480pixel", "WEBM 360pixel", "MP3");
     }
 
+    /**
+     * Clears the previous result is there is any
+     */
     private void CLEARR_ALL() {
         vbox0.getChildren().clear();
         vbox1.getChildren().clear();
@@ -108,6 +125,14 @@ public class MainController implements Initializable {
         vbox3.getChildren().clear();
     }
 
+    /**
+     *
+     * @param Title
+     * @param Thumbnail_Link
+     * @param Video_Link
+     * @param tot
+     * @throws IOException
+     */
     public void Arrange_Search_Result(String[] Title, String[] Thumbnail_Link, String[] Video_Link, final int tot) throws IOException {
 
         vbox0.getChildren().clear();
@@ -152,7 +177,6 @@ public class MainController implements Initializable {
 
             ///Thumbnail Image Section
             Thumbnail_Image[i] = new ImageView();
-            //Thumbnail_Image[i].setImage(new Image(getClass().getResource("/pics/pic_" + 2 + ".jpg").toExternalForm()));
             Thumbnail_Image[i].setImage(new Image(Thumbnail_Link[i]));
             Thumbnail_Image[i].setFitHeight(100);
             Thumbnail_Image[i].setFitWidth(190);
@@ -164,6 +188,11 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * it's create a pop up window to choose format and size
+     *
+     * @param video_no specify which video should downloaded
+     */
     void SHOW_POP_UP(int video_no) {
 
         MainApp.current = MainApp.Video_Link[video_no];
@@ -186,6 +215,14 @@ public class MainController implements Initializable {
 
     }
 
+    /**
+     * This method start a download thread.
+     *
+     * @param format
+     * @param load
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     public void TESTINGG(String format, String load) throws MalformedURLException, IOException {
 
         final DATA a = new DATA(format, load);
@@ -200,7 +237,8 @@ public class MainController implements Initializable {
         if (MainApp.dest_location == null) {
             CHANGE_DEST_BUTTON_PRESSED(new ActionEvent());
         }
-        System.out.println("Reached at mid");
+
+        // Task is created for download.
         Task task2 = null;
         task2 = new Task<Void>() {
             @Override
@@ -216,7 +254,7 @@ public class MainController implements Initializable {
                     s = a.size;
                     updateProgress(d, s);
                     sleep(100);
-                    if (d==s) {
+                    if (d == s) {
                         System.out.println("Completed Download");
                         done();
                         break;
@@ -233,12 +271,16 @@ public class MainController implements Initializable {
             }
 
         };
+        // The work is done after download completes
+
         task2.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
                 a.restart.setDisable(true);
+                a.stop.getStyleClass().add("done-button");
             }
         });
+        // Update of progress
         a.bar.progressProperty().bind(task2.progressProperty());
 
         a.stop.setOnAction(new EventHandler() {
@@ -264,6 +306,11 @@ public class MainController implements Initializable {
         MyTab.getSelectionModel().select(1);
     }
 
+    /**
+     * This Method changes the default folder
+     *
+     * @param event
+     */
     @FXML
 
     public void CHANGE_DEST_BUTTON_PRESSED(ActionEvent event) {
@@ -279,10 +326,18 @@ public class MainController implements Initializable {
     }
     static int error;
 
+    /**
+     * Play list Search method
+     *
+     * @param event
+     * @throws IOException for invalid play list
+     * @throws InterruptedException for Internet problem
+     */
     @FXML
     public void bt1_pressed(ActionEvent event) throws IOException, InterruptedException {
         CLEARR_ALL();
         all_load.setDisable(true);
+        all_choice.setDisable(true);
         error = 0;
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);;
         Parent root = null;
@@ -292,7 +347,7 @@ public class MainController implements Initializable {
             ;
         }
         alert.setTitle("Wait for a moment");
-        alert.setHeaderText("Working in progress");
+        alert.setHeaderText("Work in progress");
         alert.getDialogPane().contentProperty().set(root);
 
         Task<Void> task = new Task<Void>() {
@@ -312,6 +367,7 @@ public class MainController implements Initializable {
             public void handle(WorkerStateEvent event) {
                 try {
                     all_load.setDisable(false);
+                    all_choice.setDisable(false);
                     Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
                 } catch (IOException ex) {
                     ;
@@ -332,6 +388,7 @@ public class MainController implements Initializable {
         alert.showAndWait();
         if (error == 1) {
             all_load.setDisable(true);
+            all_choice.setDisable(true);
             Alert myalert = new Alert(Alert.AlertType.WARNING);
             myalert.setTitle("Warning Dialog");
             myalert.setHeaderText("Error in parsing data from youtube");
@@ -346,13 +403,15 @@ public class MainController implements Initializable {
         //Arrange_Search_Result(MainApp.Result, MainApp.Thumbnail_Link, MainApp.Video_Link, MainApp.total_item);
     }
 
+    /**
+     * Play list Search method
+     *
+     * @param event
+     * @throws IOException for invalid play list
+     * @throws InterruptedException for Internet problem
+     */
     @FXML
     public void video_link_button_pressed(ActionEvent event) throws IOException, InterruptedException {
-//        MainApp.current_title = "FARHAD";
-//        TESTINGG("mp4", "http://r18---sn-q4f7snsk.googlevideo.com/videoplayback?itag=18&ipbits=0&key=yt6&pl=24&dur=267.609&sver=3&expire=1471987991&nh=IgpwcjA1LmRmdzA2Kgs1MC45Ny4xNi4zNg&ratebypass=yes&initcwndbps=2868750&ei=tmy8V4bmOMPtcPSynfAP&id=o-AMu0Wow_DdM88G3dbZUxqfVFV5oAUFEgKj5qQ8BPW2z-&upn=vVgXByqkkUg&lmt=1457939870484316&ip=159.253.144.86&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cnh%2Cpl%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=9407191%2C9419451%2C9422596%2C9426731%2C9427833%2C9428398%2C9428914%2C9431012%2C9431718%2C9433096%2C9433221%2C9433946%2C9435526%2C9438227%2C9438327%2C9438662%2C9438731%2C9439580%2C9439882%2C9440431%2C9440799%2C9440927%2C9441191%2C9441459%2C9441768%2C9442424%2C9442426%2C9443259%2C9443739%2C9444229%2C9445058%2C9445143&mt=1471965857&mv=m&ms=au&source=youtube&mime=video%2Fmp4&mm=31&mn=sn-q4f7snsk&signature=3F539D9752815F5918F44FD9A29802E376407F94.79DFCD6F72A0D941B3EA2CB728CB979305F03BDB&title=Emon+Jodi+Hoto+%28%E0%A6%8F%E0%A6%AE%E0%A6%A8+%E0%A6%AF%E0%A6%A6%E0%A6%BF+%E0%A6%B9%E0%A6%A4%E0%A7%8B%29+by+Joler+Gaan");
-//        if (1 + 1 == 2) {
-//            return;
-//        }
 
         CLEARR_ALL();
 
@@ -378,20 +437,39 @@ public class MainController implements Initializable {
 
     private static MainController instance;
 
+    /**
+     *
+     */
     public MainController() {
         instance = this;
     }
 
+    /**
+     * An instance for this controller
+     *
+     * @return
+     */
     public static MainController getInstance() {
         return instance;
     }
 
+    /**
+     * Exit button
+     *
+     * @param event
+     */
     @FXML
     private void Close_It(ActionEvent event) {
-        System.out.println("Close_It Clicked.....................");
+        //System.out.println("Close_It Clicked.....................");
         MyTab.getScene().getWindow().hide();
     }
 
+    /**
+     * Change API dialogue box
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void CHANGE_API_POP_UP(ActionEvent event) throws IOException {
 
@@ -407,8 +485,15 @@ public class MainController implements Initializable {
 
     @FXML
     private void HELP(ActionEvent event) {
+        MyTab.getSelectionModel().selectLast();
     }
 
+    /**
+     * Method for download all
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void all_load_clicked(ActionEvent event) throws IOException {
         if (MainApp.total_item <= 1 || all_choice.getValue() == null) {
@@ -467,5 +552,4 @@ public class MainController implements Initializable {
             }
         }
     }
-
 }

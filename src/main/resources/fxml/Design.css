@@ -88,7 +88,16 @@
     -fx-border-width: 0;
     -fx-border-radius: 10;
 }
-
+.done-button{
+    -fx-background-image: url("done.png");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    -fx-background-radius: 10;
+    -fx-background-size: 30 30;
+/*    -fx-border-color: #000000;
+    -fx-border-width: 1;*/
+    -fx-border-radius: 10;
+}
 .restart-button{
     -fx-background-image: url("restart.png");
     -fx-background-position: center center;
@@ -120,7 +129,7 @@
     -fx-alignment: CENTER;
     -fx-font-family: Arial;
     -fx-color: #ffffff;
-    -fx-font-size: 10px;
+    -fx-font-size: 15px;
 }
 .result{
     -fx-background-color: #61e89b;

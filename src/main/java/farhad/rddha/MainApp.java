@@ -23,6 +23,12 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * this is the main class for running this application. It simply starts from
+ * here.
+ *
+ * @author rafikfarhad
+ */
 public class MainApp extends Application {
 
     public static String inputQuery;
@@ -37,6 +43,9 @@ public class MainApp extends Application {
 
     public static String dest_location = System.getProperty("user.home") + "/Desktop";
 
+    /**
+     * This method starts the initial GUI
+     */
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -68,22 +77,32 @@ public class MainApp extends Application {
         String line;
         br = new BufferedReader(new FileReader(dest1.toString()));
         line = br.readLine();
-        System.out.println("MY KEYS: " + line);
+        //System.out.println("MY KEYS: " + line);
         keys = line;
     }
-   
-    
+
     private static MainApp instance;
 
+    /**
+     * Get an instance for other classes which has been needed access data from
+     * this class
+     */
     public MainApp() {
         instance = this;
     }
-// static method to get instance of view
 
+    /**
+     *
+     * @return an Instance of this class
+     */
     public static MainApp getInstance() {
         return instance;
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

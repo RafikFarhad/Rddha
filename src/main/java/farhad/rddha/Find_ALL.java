@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package farhad.rddha;
 
 import farhad.rddha.Controller.MainController;
@@ -14,6 +9,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 /**
+ * If all files selected from a playlist then this class is used for grabbing
+ * all download link of playlist.
  *
  * @author rafikfarhad
  */
@@ -22,6 +19,10 @@ public final class Find_ALL {
     public static int loaded = 0;
     public static int err = 0;
 
+    /**
+     * Constructor It starts to grabbing data automatically from
+     * www.keepvid.com;
+     */
     public Find_ALL() {
         String my_format = MainController.all_load_format;
         String[] link = MainApp.Video_Link;
@@ -63,24 +64,48 @@ public final class Find_ALL {
 
     }
 
+    /**
+     *
+     * @param link the video link of the video
+     * @return
+     * @throws MalformedURLException If there is a network error
+     * @throws IOException If there is a error in open/closing error in http
+     * request
+     */
     String CALL_480(String link) throws MalformedURLException, IOException {
         URL yahoo = new URL("http://keepvid.com/?url=https://www.youtube.com/watch?v=" + link);
-        Document document = Jsoup.connect(yahoo.toString()).get();
+        Document document = Jsoup.connect(yahoo.toString()).timeout(20 * 1000).get();
         Elements links = document.getElementsContainingOwnText("» Download MP4 «");
         return links.first().attr("abs:href");
 
     }
 
+    /**
+     *
+     * @param link the video link of the video
+     * @return
+     * @throws MalformedURLException If there is a network error
+     * @throws IOException If there is a error in open/closing error in http
+     * request
+     */
     String CALL_webm(String link) throws MalformedURLException, IOException {
         URL yahoo = new URL("http://keepvid.com/?url=https://www.youtube.com/watch?v=" + link);
-        Document document = Jsoup.connect(yahoo.toString()).get();
+        Document document = Jsoup.connect(yahoo.toString()).timeout(20 * 1000).get();
         Elements links = document.getElementsContainingOwnText("» Download WEBM «");
         return links.first().attr("abs:href");
     }
 
+    /**
+     *
+     * @param link the video link of the video
+     * @return
+     * @throws MalformedURLException If there is a network error
+     * @throws IOException If there is a error in open/closing error in http
+     * request
+     */
     String CALL_m4a(String link) throws MalformedURLException, IOException {
         URL yahoo = new URL("http://keepvid.com/?url=https://www.youtube.com/watch?v=" + link);
-        Document document = Jsoup.connect(yahoo.toString()).get();
+        Document document = Jsoup.connect(yahoo.toString()).timeout(20 * 1000).get();
         Elements links = document.getElementsContainingOwnText("» Download M4A «");
         return links.first().attr("abs:href");
     }

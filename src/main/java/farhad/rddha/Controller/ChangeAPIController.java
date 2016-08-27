@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import org.apache.commons.io.FileUtils;
 
 /**
- * FXML Controller class
+ * FXML Controller class If want to change our API keys, we may use this class
  *
  * @author rafikfarhad
  */
@@ -32,9 +32,7 @@ public class ChangeAPIController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         myAPI.setText(MainApp.keys);
-
     }
 
     @FXML
@@ -54,7 +52,7 @@ public class ChangeAPIController implements Initializable {
     }
 
     @FXML
-    private void API_CANCEL_PRESSED(ActionEvent event){
+    private void API_CANCEL_PRESSED(ActionEvent event) {
         apiOK.getScene().getWindow().hide();
     }
 

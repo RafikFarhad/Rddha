@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 /**
+ * This class is for download a video in a dedicated thread. It also keep a
+ * progress-bar for for keep tracking how much a file being downloaded.
  *
  * @author rafikfarhad
  */
@@ -31,6 +33,14 @@ public class DATA extends Observable implements Runnable {
     public int on;
     public String format, load, title;
 
+    /**
+     * this constructors initilize the value, create a blank file in the local
+     * memory & starts the download
+     *
+     * @param format the format of the video
+     * @param load the downloading link
+     * @throws MalformedURLException If there is a Internet Connection Error
+     */
     public DATA(String format, String load) throws MalformedURLException {
         bar = new ProgressBar();
         restart = new Button();
@@ -60,121 +70,132 @@ public class DATA extends Observable implements Runnable {
         download();
 
     }
-    // Max size of download buffer.
-    private static final int MAX_BUFFER_SIZE = 8192;
-     
-    // These are the status names.
-    public static final String STATUSES[] = {"Downloading",
-    "Paused", "Complete", "Cancelled", "Error"};
-     
-    // These are the status codes.
+    //States Of Downloads
     public static final int DOWNLOADING = 0;
     public static final int PAUSED = 1;
     public static final int COMPLETE = 2;
     public static final int CANCELLED = 3;
     public static final int ERROR = 4;
-     
     private URL url; // download URL
     public int size; // size of download in bytes
     private int downloaded; // number of bytes downloaded
     public int status; // current status of download
     public File file;
-    
-     
-    // Get this download's URL.
+
+    /**
+     *
+     * @return the url as string
+     */
     public String getUrl() {
         return url.toString();
     }
-     
-    // Get this download's size.
+
+    /**
+     * Get this download's size.
+     *
+     * @return
+     */
     public int getSize() {
         return size;
     }
-     
-    // Get this download's progress.
+
+    /**
+     * Get this download's progress.
+     *
+     * @return
+     */
     public float getProgress() {
         return ((float) downloaded / size) * 100;
     }
-     
-    // Get this download's status.
+
+    /**
+     * Get this download's status.
+     *
+     * @return
+     */
     public int getStatus() {
         return status;
     }
-     
-    // Pause this download.
-    public void pause() {
-        status = PAUSED;
+
+    /**
+     * .
+     * Mark this download as having an error
+     */
+    private void error() {
+        status = ERROR;
         stateChanged();
     }
-     
-    // Resume this download.
+
+    /**
+     * Start or resume downloading.
+     */
+    private void download() {
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    /**
+     * To resume download
+     */
     public void resume() {
         status = DOWNLOADING;
         stateChanged();
         download();
     }
-     
-    // Cancel this download.
+
+    /**
+     * Cancel this download.
+     */
     public void cancel() {
         status = CANCELLED;
         stateChanged();
     }
-     
-    // Mark this download as having an error.
-    private void error() {
-        status = ERROR;
-        stateChanged();
-    }
-     
-    // Start or resume downloading.
-    private void download() {
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-     
-    // Get file name portion of URL.
+
+    /**
+     * Get file name portion of URL.
+     */
     private String getFileName(URL url) {
         String fileName = url.getFile();
         return fileName.substring(fileName.lastIndexOf('/') + 1);
     }
-     
-    // Download file.
+
+    /**
+     * Download file.
+     */
     public void run() {
         file = null;
         InputStream stream = null;
-         
+
         try {
             // Open connection to URL.
-            HttpURLConnection connection =
-                    (HttpURLConnection) url.openConnection();
-             
+            HttpURLConnection connection
+                    = (HttpURLConnection) url.openConnection();
+
             // Specify what portion of file to download.
             connection.setRequestProperty("Range",
                     "bytes=" + downloaded + "-");
-             
+
             // Connect to server.
             connection.connect();
-             
-            
-             
+
             // Check for valid content length.
             int contentLength = connection.getContentLength();
             if (contentLength < 1) {
                 error();
             }
-             
-      /* Set the size for this download if it
+
+            /* Set the size for this download if it
          hasn't been already set. */
             if (size == -1) {
                 size = contentLength;
                 stateChanged();
             }
-             
+
             file = new File(title);
             stream = connection.getInputStream();
             Files.copy(stream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-             
-      /* Change status to complete if this point was
+
+            /* Change status to complete if this point was
          reached because downloading has finished. */
             if (status == DOWNLOADING) {
                 status = COMPLETE;
@@ -183,186 +204,20 @@ public class DATA extends Observable implements Runnable {
         } catch (Exception e) {
             error();
         } finally {
-                         
+
             // Close connection to server.
             if (stream != null) {
                 try {
                     stream.close();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
         }
     }
-     
+
     // Notify observers that this download's status has changed.
     private void stateChanged() {
-//        setChanged();
-//        notifyObservers();
-        //System.out.println("stateChanged() -> " + downloaded  + " -> " + size);
+
     }
 
-//    // Max size of download buffer.
-//    private static final int MAX_BUFFER_SIZE = 4096;
-//
-//    // These are the status codes.
-//    public final int DOWNLOADING = 0;
-//    public final int PAUSED = 1;
-//    public final int COMPLETE = 2;
-//    public final int CANCELLED = 3;
-//    public final int ERROR = 4;
-//
-//    private URL url; // download URL
-//    public int size; // size of download in bytes
-//    public int downloaded; // number of bytes downloaded
-//    private int status; // current status of download
-//
-//    // Get this download's size.
-//    public int getSize() {
-//        return size;
-//    }
-//
-//    // Get this download's status.
-//    public int getStatus() {
-//        return status;
-//    }
-//
-//    // Pause this download.
-//    public void go_to_pause() {
-//        status = PAUSED;
-//        stateChanged();
-//    }
-//
-//    // Resume this download.
-//    public void go_to_resume() {
-//        status = DOWNLOADING;
-//        stateChanged();
-//        download();
-//    }
-//
-//    // Cancel this download.
-//    public void cancel() {
-//        status = CANCELLED;
-//        stateChanged();
-//    }
-//
-//    // Mark this download as having an error.
-//    private void error() {
-//        status = ERROR;
-//        stateChanged();
-//    }
-//
-//    // Start or resume downloading.
-//    private void download() {
-//        Thread thread = new Thread(this);
-//        thread.start();
-//    }
-//
-//    // Get file name portion of URL.
-//    private String getFileName(URL url) {
-//        String fileName = url.getFile();
-//        return fileName.substring(fileName.lastIndexOf('=') + 1);
-//    }
-//    RandomAccessFile file = null;
-////    public file getFile(){
-////        return file;
-////    }
-//    // Download file.
-//
-//    public void run() {
-//        file = null;
-//        InputStream stream = null;
-//
-//        try {
-//            // Open connection to URL.
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//
-//            // Specify what portion of file to download.
-//            connection.setRequestProperty("Range", "bytes=" + downloaded + "-");
-//
-//            // Connect to server.
-//            connection.connect();
-//
-//            // Make sure response code is in the 200 range.
-//            if (connection.getResponseCode() / 100 != 2) {
-//                error();
-//            }
-//
-//            // Check for valid content length.
-//            int contentLength = connection.getContentLength();
-//            if (contentLength < 1) {
-//                error();
-//            }
-//
-//            /* Set the size for this download if it hasn't been already set. */
-//            if (size == -1) {
-//                size = contentLength;
-//                stateChanged();
-//            }
-//
-//            // Open file and seek to the end of it.
-//            file = new RandomAccessFile(title, "rw");
-//            file.seek(downloaded);
-//
-//            stream = connection.getInputStream();
-//
-//            while (status == DOWNLOADING) {
-//                /* Size buffer according to how much of the file is left to download. */
-//                byte buffer[];
-//                if (size - downloaded > MAX_BUFFER_SIZE) {
-//                    buffer = new byte[MAX_BUFFER_SIZE];
-//                } else {
-//
-//                    buffer = new byte[size - downloaded];
-//
-//                }
-//                // Read from server into buffer.
-//                int read = stream.read(buffer);
-//                if (read < 1) {
-//                    break;
-//                }
-//                // Write buffer to file.
-//                file.write(buffer, 0, read);
-//                downloaded += read;
-//                stateChanged();
-//            }
-//
-//            /* Change status to complete if this point was reached because downloading has finished. */
-//            if (status == DOWNLOADING) {
-//                status = COMPLETE;
-//                stateChanged();
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Here is Exception in download func() + " + e);
-//            error();
-//        } finally {
-//            // Close file.
-//            if (file != null) {
-//                try {
-//                    file.close();
-//                } catch (Exception e) {
-//                }
-//            }
-//            // Close connection to server.
-//            if (stream != null) {
-//                try {
-//                    //stream.close();
-//                } catch (Exception e) {
-//                }
-//            }
-//        }
-//    }
-//
-//    // Notify observers that this download's status has changed.
-//    private void stateChanged() {
-//        //setChanged();
-//        //notifyObservers();
-//        System.out.println("stateChanged() " + getStatus());
-//    }
-//
-////    @Override
-////    public void update(Observable o, Object arg) {
-////
-////        System.out.println("Updating... + " + downloaded + " -> " + size + " -> " + getFileName(url));
-////        //http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1391-how-to-create-a-download-manager-in-java.html
-////
-////    }
 }

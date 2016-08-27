@@ -23,6 +23,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 /**
+ * This class is the pop for SHOW_POP_UP for mainController It displays 4 kind
+ * of format for user to download
  *
  * @author rafikfarhad
  */
@@ -46,9 +48,15 @@ public class PopupController implements Initializable {
     @FXML
     private Label g3;
     int not_ok = 0;
-    
+
+    /**
+     * Initilizer
+     *
+     * @param location
+     * @param resources
+     */
     @Override
-    
+
     public void initialize(URL location, ResourceBundle resources) {
 
         choice.getItems().addAll("MP4 720pixel", "MP4 480pixel", "WEBM 360pixel", "MP3");
@@ -56,16 +64,18 @@ public class PopupController implements Initializable {
         double m1 = 0, m2 = 0, g1 = 0, w = 0;
         try {
             URL yahoo = new URL("http://keepvid.com/?url=https://www.youtube.com/watch?v=" + MainApp.current);
-
-            Document document = Jsoup.connect(yahoo.toString()).get();
-
+            System.out.println("111111111111111111111111111");
+            Document document = Jsoup.connect(yahoo.toString()).timeout(20 * 1000).get();
+            System.out.println("2222222222222222222222222");
             Elements links = document.getElementsContainingOwnText("» Download MP4 «");
+            System.out.println("333333333333333333333333333");
             MP4_480 = links.first().attr("abs:href");
             MP4_720 = links.get(1).attr("abs:href");
 
             links = document.getElementsContainingOwnText("» Download M4A «");
             G3P = links.first().attr("abs:href");
             links = document.getElementsContainingOwnText("» Download WEBM «");
+            System.out.println(MP4_720 + "\n" + MP4_480 + "\n" + WEBM + "\n");
             WEBM = links.first().attr("abs:href");
             {
                 URL url = new URL(MP4_480);
@@ -113,7 +123,7 @@ public class PopupController implements Initializable {
             webm.setText("Not Available");
             g3.setText("Not Available");
             ok_button.setVisible(false);
-            choice.setVisible(false);            
+            choice.setVisible(false);
             return;
         }
         if (m1 > m2) {
@@ -128,11 +138,23 @@ public class PopupController implements Initializable {
 
     }
 
+    /**
+     * to cancel this pop up menu
+     *
+     * @param event
+     */
     @FXML
     private void CANCEL_BUTTON_PRESSED(ActionEvent event) {
         ok_button.getScene().getWindow().hide();
     }
 
+    /**
+     * select a fromat and start download
+     *
+     * @param event
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     @FXML
     private void OK_BUTTON_PRESSED(ActionEvent event) throws MalformedURLException, IOException {
         String my_format = choice.getValue();
